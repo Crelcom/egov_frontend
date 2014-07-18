@@ -1,5 +1,6 @@
 var _ = require('../public/bower_components/underscore/underscore'),
     proxy = require('request'),
+    config = require('../config'),
     methods = {
         'GET': 'get',
         'POST': 'post',
@@ -50,7 +51,7 @@ module.exports = function(express){
                 next(401, 'You must authorize');
             }
             var path = req.url,
-                url = 'http://replica.loc:9090' + path,
+                url = config.get('backend') + path,
                 params = {},
                 options = {
                     url: url,
