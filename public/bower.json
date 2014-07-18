@@ -1,0 +1,29 @@
+{
+  "name": "egov",
+  "version": "0.0.1",
+  "authors": [
+    "Sergey Tkachenko <re4thzdsq@gmail.com>"
+  ],
+  "description": "ui libs",
+  "main": "inited",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "ui"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "dispatch": "~1.3.0",
+    "knockout-postbox": "~0.4.2",
+    "bootstrap": "~3.2.0",
+    "knockout.punches": "~0.3.1",
+    "requirejs": "~2.1.14",
+    "knockout": "~3.1.0",
+    "knockout-mapping": "~2.4.1",
+    "simply-deferred": "~3.0.0",
+    "underscore": "~1.6.0",
+    "requirejs-text": "~2.0.12"
+  }
+}
