@@ -13,10 +13,16 @@
     .labelForVisibleForm{
         display: none;
     }
+    .labelForVisibleForm h2{
+        margin:0;
+    }
     .demo{
         display: block;
     }
 }
+.labelForVisibleForm h2{
+        margin:0;
+    }
 body{
     padding-top: 50px;
 }
@@ -31,7 +37,7 @@ body{
     width: 200px;
 }
 .form-control{
-    padding-left: 10px;
+    padding:  0 15px;
 }
 .form-inline{
     width: 100%;
@@ -100,7 +106,7 @@ body{
     margin-left: 10px;
 }
 .filters {
-    padding: 15px 1%;
+    padding: 7px 1% 7px 1%;
     margin: 0;
     background-color: #F1F1F1;
 }
