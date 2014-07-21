@@ -1,7 +1,5 @@
 @import 'vars';
-@import 'mail';
-@import 'large';
-@import 'small';
+
 // styles
 body{
   padding-top: $padding-body;
@@ -12,3 +10,8 @@ h2 {
 h1, h2, h3, h4, h5, h6 {
   font-weight: $font-weight;
 }
+
+
+@import 'mail';
+@import 'large';
+@import 'small';

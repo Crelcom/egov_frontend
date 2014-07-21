@@ -1,3 +1,12 @@
+body {
+  padding-top: 50px; }
+
+h2 {
+  font-size: 24px; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 100; }
+
 .starter-template {
   text-align: center;
   width: 100%; }
@@ -184,12 +193,3 @@ table.table.mails tr.unreaded td {
     display: block; }
   .filters {
     display: none; } }
-
-body {
-  padding-top: 50px; }
-
-h2 {
-  font-size: 24px; }
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 100; }
