@@ -1,3 +1,4 @@
+// modules
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -8,9 +9,11 @@ var methodOverride = require('method-override');
 var swig = require('swig');
 var router = require('./router')(express);
 
+// init express app
 var app = express();
 
 // view engine setup
+// swig settings
 app.set('view cache', false);
 swig.setDefaults({ cache: false });
 swig.setDefaults({ tagControls: ['[%', '%]'] });
@@ -28,6 +31,7 @@ app.use(methodOverride());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// include routing system
 app.use('/', router);
 
 /// catch 404 and forward to error handler

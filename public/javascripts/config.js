@@ -1,3 +1,5 @@
+// config file for clients script
+// define paths
 requirejs.config({
     baseUrl: 'javascripts/app',
     paths: {
@@ -17,6 +19,8 @@ requirejs.config({
     }
 });
 
+// first started module
+// include KO dependency and run app.start()
 requirejs([ 'knockout',
             'punches',
             'mapping',
@@ -29,6 +33,8 @@ requirejs([ 'knockout',
 
         // init KO functionality
         ko.punches.enableAll();
+
+        // custom bindings
         ko.bindingHandlers.stopBinding = {
             init: function () {
                 return { controlsDescendantBindings: true };
@@ -43,6 +49,8 @@ requirejs([ 'knockout',
                 }
             }
         };
+
+        // expand observableArray - push array of items to observableArray
         ko.observableArray.fn.pushAll = function(valuesToPush) {
             var underlyingArray = this();
             this.valueWillMutate();

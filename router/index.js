@@ -1,3 +1,4 @@
+// modules
 var _ = require('../public/bower_components/underscore/underscore'),
     proxy = require('request'),
     config = require('../config'),
@@ -8,6 +9,7 @@ var _ = require('../public/bower_components/underscore/underscore'),
         'DELETE': 'delete'
     };
 
+// callback for validating cookies
 function checkCookies(req, callback){
     // @todo validate cookie
     if(_.isEmpty(req.cookies) && req.params.module !== 'login'){
@@ -17,8 +19,10 @@ function checkCookies(req, callback){
 }
 
 module.exports = function(express){
+    // router instance
     var router = express.Router();
 
+    // main page route
     router.get('/', function(req, res, next){
         checkCookies(req, function(err, data){
             if(err){
@@ -29,6 +33,7 @@ module.exports = function(express){
         })
     });
 
+    // universal module loader
     router.route('/:module')
         .get(function(req, res, next) {
             checkCookies(req, function(err, data){
