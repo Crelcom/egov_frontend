@@ -17,6 +17,10 @@ define(function () {
 
     // Folders section
     var foldersMeta = {
+        extend: {
+            type: 'rest',
+            baseUrl: '/api/mail_folders.json'
+        },
         default: _defaults.folders,
         mixin: function(){
             this.setActive = function(o, e){
@@ -27,7 +31,7 @@ define(function () {
         }
     };
     var _FoldersVM = app.Widget.get('list', foldersMeta);
-    _FoldersVM.init('/api/mail_folders.json');
+    _FoldersVM.init();
 
     KO.applyBindings(_FoldersVM, document.querySelector('#mail-folders'));
 

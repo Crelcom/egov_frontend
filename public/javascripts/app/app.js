@@ -3,6 +3,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
 
     var KO = require('knockout');
 
+    // async loads modules
     function loadModule(name){
         if(name && name !== ''){
             var dfr = new Deferred();
@@ -38,23 +39,6 @@ define(['underscore', 'deferred'], function(_, Deferred){
             );
         }
     };
-    // List constructor
-    function _ListConstructor(meta){
-        var self = this;
-        self.data = KO.observableArray(meta.default || []);
-        if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);
-    }
-    _ListConstructor.prototype.init = function(url){
-        var initData = Ajax({
-            method: 'GET',
-            url: url
-        });
-        initData.done(
-            function(resp){
-                if(resp && resp !== '') this.data.pushAll(JSON.parse(resp) || []);
-            }.bind(this)
-        );
-    };
     // Rest constructor
     function _RestConstructor(meta){
         var self = this;
@@ -71,6 +55,29 @@ define(['underscore', 'deferred'], function(_, Deferred){
             return request;
         }
     };
+    // List constructor
+    function _ListConstructor(meta){
+        var self = this;
+        if(meta.extend && typeof meta.extend.type === 'string'){
+            KO.utils.extend(this, new _RestConstructor(meta.extend));
+            KO.utils.extend(this, _RestConstructor.prototype);
+        }
+        self.data = KO.observableArray(meta.default || []);
+        if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);
+    }
+    _ListConstructor.prototype.init = function(url){
+        url = this.resource || url;
+        var initData = Ajax({
+            method: 'GET',
+            url: url
+        });
+        initData.done(
+            function(resp){
+                if(resp && resp !== '') this.data.pushAll(JSON.parse(resp) || []);
+            }.bind(this)
+        );
+    };
+
 
     // Widget factory
     var widgetFactory = function(){
@@ -89,7 +96,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
     }();
 
 
-
+    // view model for repeated page parts
     function _appVM(){
         var self = this,
             userData = localStorage.userData ? JSON.parse(localStorage.userData) : {name: 'Guest'};
@@ -100,12 +107,14 @@ define(['underscore', 'deferred'], function(_, Deferred){
         }, self);
     }
 
+    // load main module for current page
     function appStart(){
-        // load main module for current page
         var uiRouter = new _RouterConstructor();
         KO.applyBindings(new _appVM());
     }
 
+
+    // Utility functions for app:
 
     //wrapper for XHR
     function Ajax(params){

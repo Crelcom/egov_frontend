@@ -8,6 +8,8 @@ define(function(){
     // view module
     var LoginVM = function(){
         var self = this;
+
+        //submit handler for login form
         self.LoginSubmit = function(form){
             var params = {
                 method: 'POST',
@@ -31,6 +33,7 @@ define(function(){
         };
     };
 
+    // save session data to cookies
     function saveSession(data){
         // save cookie
         var d = new Date();
@@ -39,6 +42,7 @@ define(function(){
         document.cookie = data['session_name'] + "=" + data.sessid + "; " + expires + '; path=/';
     }
 
+    // start module
     function start(){
         KO.applyBindings(new LoginVM, document.querySelector('#login-form'));
     }
