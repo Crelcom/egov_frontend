@@ -1,0 +1,15 @@
+@media (max-width: 650px) {
+  .labelForVisibleForm{
+    display: block;
+
+    h2{
+      margin:0;
+    }
+  }
+  #visibleForm:checked+.filters{
+    display: block;
+  }
+  .filters{
+    display: none;
+  }
+}

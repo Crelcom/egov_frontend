@@ -4,7 +4,7 @@ var prefix = require('gulp-autoprefixer');
 
 var paths = {
     styles: {
-        src: './public/stylesheets/scss/*.scss',
+        src: './public/stylesheets/scss/styles.scss',
         dest: './public/stylesheets/css'
     }
 };
