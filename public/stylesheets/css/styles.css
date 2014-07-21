@@ -7,6 +7,13 @@ h2 {
 h1, h2, h3, h4, h5, h6 {
   font-weight: 100; }
 
+.logout {
+  float: right;
+  cursor: pointer; }
+
+.logout:hover {
+  color: #fff; }
+
 .starter-template {
   text-align: center;
   width: 100%; }

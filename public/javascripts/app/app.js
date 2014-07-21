@@ -105,6 +105,11 @@ define(['underscore', 'deferred'], function(_, Deferred){
             var data = this.currentUser();
             return data.name;
         }, self);
+        self.logout = function(){
+            var name = document.cookie.split('=');
+            document.cookie = name[0] + "=" + "; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+            location.reload();
+        }
     }
 
     // load main module for current page
