@@ -1,5 +1,6 @@
 body {
-  padding-top: 50px; }
+  padding-top: 50px;
+  padding-bottom: 50px; }
 
 h2 {
   font-size: 24px; }
@@ -13,6 +14,32 @@ h1, h2, h3, h4, h5, h6 {
 
 .logout:hover {
   color: #fff; }
+
+.wrapper-box {
+  text-align: left;
+  border-radius: 7px;
+  padding: 20px;
+  border: 1px solid #b6b6b6; }
+  .wrapper-box a {
+    color: #645c57; }
+  .wrapper-box .labelForNew {
+    margin: 8px 0;
+    margin-left: 3px;
+    display: inline-block;
+    margin-right: 8px; }
+  .wrapper-box textarea {
+    width: 100%; }
+  .wrapper-box span {
+    font-size: 10px; }
+  .wrapper-box .main-button {
+    margin-top: 15px; }
+  .wrapper-box .wrapperDiv {
+    border: 1px solid #b6b6b6;
+    padding: 20px 3px;
+    margin: 8px 0; }
+    .wrapper-box .wrapperDiv .labelForNew {
+      margin: 0;
+      margin-right: 8px; }
 
 .starter-template {
   text-align: center;
