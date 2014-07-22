@@ -29,5 +29,8 @@ node_modules
 # UI libs
 public/bower_components
 
+# config
+config/config.json
+
 # Workflow files
 .idea

@@ -1,4 +1,4 @@
 {
     "port": 3000,
-    "backend": "http://egov.com/"
+    "backend": "http://replica.loc:9090"
 }
