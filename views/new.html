@@ -1,0 +1,93 @@
+[% extends 'layout.html' %]
+
+[% block body%]
+
+
+<div class="container">
+    <div class="starter-template">
+        <h1>New mail</h1>
+            <div id="mails-grid" data-bind="if: gridView">
+                <form class="form-inline" role="form">
+                    <div class="row-fluid wrapper-box">
+                        <h2 class="labelForNew">Header</h2>
+                        <input type="text" placeholder="Введите текст" class="form-control input-xlarge"><br>
+                        <div class="wrapperDiv">
+                            <h2 class="labelForNew">Addressee</h2>
+                            <button class="btn btn-white">Add</button>
+                            <button class="btn btn-white">Address book </button><br>
+                        </div>
+                        <h2 class="labelForNew">Letter's body</h2><br>
+                        <textarea rows="10"></textarea><br>
+                        <a href = "#">Switch to other text editor</a><br>
+                        <div class="wrapperDiv">
+                            <h2 class="labelForNew">Attach a file</h2>
+                            <input type = "file"><br>
+                            <span>Max size: 1.95 Gb.</span><br>
+                        </div>
+                        <button class="btn  btn-white main-button">Send</button>
+                        <button class="btn  btn-white main-button">Reset</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+[% endblock %]
+
+[% block tpls %]
+
+<script type="text/html" id="mail-folders-tpl">
+    <li data-bind="click: $root.setActive, selected: 'title'">
+        <a data-bind="attr.href: '/mail#'+title">{{title}}</a>
+    </li>
+</script>
+
+<script type="text/html" id="mails-grid-tpl">
+    <tr data-bind="click: $root.choosenMail">
+        <td><input type="checkbox" name="selectItem"/></td>
+        <td>{{title}}</td>
+        <td>{{position}}</td>
+        <td>{{organization}}</td>
+        <td>{{user}}</td>
+        <td>{{date}}</td>
+    </tr>
+</script>
+
+<script type="text/html" id="mail-attach-tpl">
+    <div class="mail-attachment">
+        <p>
+            <span><i class="fa fa-paperclip"></i> Attachments - </span>
+            <a href="#">Download</a>
+        </p>
+        <div class="file-box">
+            <div class="file">
+                <a href="#">
+                    <span class="corner"></span>
+                    <div class="thumbnail">
+                        <img data-src="holder.js/100%x180" alt="...">
+                    </div>
+                    <div class="file-name">
+                        {{attachName}}
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="attachment">
+            <div class="file-box">
+                <div class="file">
+                    <a href="#">
+                        <span class="corner"></span>
+                        <div class="icon">
+                                <i class="glyphicon glyphicon-file"></i>
+                        </div>
+                        <div class="file-name">
+                            {{attachName}}
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</script>
+[% endblock %]
