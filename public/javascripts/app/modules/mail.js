@@ -17,10 +17,6 @@ define(function () {
 
     // Folders section
     var foldersMeta = {
-        extend: {
-            type: 'rest',
-            baseUrl: '/api/mail_folders.json'
-        },
         default: _defaults.folders,
         mixin: function(){
             this.setActive = function(o, e){
@@ -28,10 +24,49 @@ define(function () {
                 KO.postbox.publish('gridViewBool', true);
             };
             this.activeTab = KO.observable('Inbox').subscribeTo('setActiveTab');
+            this.createMessage = function(){
+                var saveResponse = app.Ajx({
+                    url: 'api/node.json',
+                    method: 'POST',
+                    token: true,
+                    data: JSON.stringify({
+                        "title": "test create reference",
+                        "type": "mail_message",
+                        "body":{
+                            "und": [
+                                {"value":"post body value"}
+                            ]
+                        },
+                        "field_message_status": {
+                            "und":[
+                                {"target_id":"[nid:6]"}
+                            ]
+                        },
+                        "field_sender_position":{
+                            "und":[
+                                {"target_id":"[nid:11]"}
+                            ]
+                        },
+                        "field_sender_organization":{
+                            "und":[
+                                {"target_id":"[nid:1]"}
+                            ]
+                        },
+                        "field_sender_user":{
+                            "und":[
+                                {"target_id":"[nid:6]"}
+                            ]
+                        }
+                    })
+                }).done(function(response){
+                    console.log(response);
+                });
+            }
         }
     };
-    var _FoldersVM = app.Widget.get('list', foldersMeta);
-    _FoldersVM.init();
+    var _FoldersVM = app.Widget('list', foldersMeta)
+        .extend('rest', {baseUrl: 'api/node'})
+        .init('/api/mail_folders.json');
 
     KO.applyBindings(_FoldersVM, document.querySelector('#mail-folders'));
 
@@ -43,8 +78,8 @@ define(function () {
             this.gridView = KO.observable(true).subscribeTo('gridViewBool');
         }
     };
-    var _MailGridVM = app.Widget.get('list', mailGridMeta);
-    _MailGridVM.init('/api/mail_letters.json');
+    var _MailGridVM = app.Widget('list', mailGridMeta)
+        .init('/api/mail_letters.json');
 
     KO.applyBindings(_MailGridVM, document.querySelector('#mails-grid'));
 
@@ -81,7 +116,7 @@ define(function () {
         }
     };
 
-    var _SingleMailVM = app.Widget.get('rest', singleMailMeta);
+    var _SingleMailVM = app.Widget('rest', singleMailMeta);
     KO.applyBindings(_SingleMailVM, document.querySelector('#single-mail'));
 
 

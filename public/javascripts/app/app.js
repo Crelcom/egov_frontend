@@ -39,60 +39,66 @@ define(['underscore', 'deferred'], function(_, Deferred){
             );
         }
     };
+
     // Rest constructor
     function _RestConstructor(meta){
         var self = this;
         self.resource = meta.baseUrl;
-        if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);
-    }
-    _RestConstructor.prototype = {
-        load: function(id){
+        self.load = function(id){
             var self = this;
             var request = Ajax({
                 url: '/' + self.resource + '.json',
                 data: {id: id}
             });
             return request;
-        }
-    };
+        };
+        if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);
+    }
+
     // List constructor
     function _ListConstructor(meta){
         var self = this;
-        if(meta.extend && typeof meta.extend.type === 'string'){
-            KO.utils.extend(this, new _RestConstructor(meta.extend));
-            KO.utils.extend(this, _RestConstructor.prototype);
-        }
         self.data = KO.observableArray(meta.default || []);
+
+        self.init = function(url){
+            url = url || self.resource;
+            var initData = Ajax({
+                method: 'GET',
+                url: url
+            });
+            initData.done(
+                function(resp){
+                    if(resp && resp !== '') self.data.pushAll(JSON.parse(resp) || []);
+                }
+            );
+            return self;
+        };
+        // user can expand default properties from mixin
         if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);
     }
-    _ListConstructor.prototype.init = function(url){
-        url = this.resource || url;
-        var initData = Ajax({
-            method: 'GET',
-            url: url
-        });
-        initData.done(
-            function(resp){
-                if(resp && resp !== '') this.data.pushAll(JSON.parse(resp) || []);
-            }.bind(this)
-        );
-    };
 
 
     // Widget factory
     var widgetFactory = function(){
         var storage = {
             list: _ListConstructor,
-            rest: _RestConstructor,
-            route: _RouterConstructor
+            rest: _RestConstructor
         };
-        function Widget(){
-
+        function Widget(name, data){
+            if (!(this instanceof Widget)) return new Widget(name, data);
+            var self = this;
+            if(storage[name] && typeof storage[name] === 'function'){
+                storage[name].call(self, data);
+            }
         }
-        Widget.prototype.get = function(name, data){
-            if(storage[name] && typeof storage[name] === 'function') return new storage[name](data);
+        Widget.prototype.extend = function(type, data){
+            var self = this;
+            if(type && typeof type === 'string'){
+                KO.utils.extend(self, new _RestConstructor(data));
+            }
+            return self;
         };
-        return new Widget();
+        return Widget;
     }();
 
 
@@ -136,6 +142,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
             }, '?');
             url += toGet;
         }
+
         xhr.open(method, url, true);
         xhr.onreadystatechange = function(){
             if(xhr.readyState === 4){
@@ -149,8 +156,12 @@ define(['underscore', 'deferred'], function(_, Deferred){
         //default header
         xhr.setRequestHeader('Content-Type', 'application/json');
 
+
         if(params.before && typeof params.before === 'function'){
             params.before(xhr);
+        }
+        if(params.token){
+            xhr.setRequestHeader("X-CSRF-Token", localStorage.TOKEN);
         }
         xhr.send(data);
         return dfr;

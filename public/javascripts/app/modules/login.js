@@ -40,6 +40,7 @@ define(function(){
         d.setTime(d.getTime() + (7*24*60*60*1000));
         var expires = "expires="+d.toGMTString();
         document.cookie = data['session_name'] + "=" + data.sessid + "; " + expires + '; path=/';
+        localStorage.TOKEN = data.token;
     }
 
     // start module

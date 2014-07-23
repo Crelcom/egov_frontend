@@ -62,6 +62,7 @@ module.exports = function(express){
                     url: url,
                     headers: {
                         'Cookie': req.headers.cookie,
+                        'X-CSRF-Token': req.headers['x-csrf-token'],
                         'Content-Type': 'application/json'
                     }
                 },
@@ -79,6 +80,8 @@ module.exports = function(express){
             }).form(params);
 
         });
+
+
 
 
     return router;

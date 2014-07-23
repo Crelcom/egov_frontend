@@ -11,6 +11,7 @@
             <!-- ko template: {name: 'mail-folders-tpl', foreach: data} -->
             <!-- /ko -->
             <li><a href="#">+</a></li>
+            <li data-bind="click: createMessage">New Message</li>
         </ul>
         <div id="mails-grid" data-bind="if: gridView">
             <form class="form-inline" role="form">
