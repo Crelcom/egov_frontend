@@ -25,6 +25,7 @@ define(function () {
             };
             this.activeTab = KO.observable('Inbox').subscribeTo('setActiveTab');
             this.createMessage = function(){
+                app.currentView('message');
                 var saveResponse = app.Ajx({
                     url: 'api/node.json',
                     method: 'POST',

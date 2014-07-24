@@ -63,6 +63,18 @@ requirejs([ 'knockout',
         };
         ko.virtualElements.allowedBindings.popup = true;
 
+        ko.bindingHandlers.viewSwitch = {
+            update: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                var bool;
+                if(app.currentView() === valueAccessor()){
+                    bool = true;
+                } else{
+                    bool = false;
+                }
+                return ko.bindingHandlers.visible.update(element, function(){return bool;});
+            }
+        };
+
         // expand observableArray - push array of items to observableArray
         ko.observableArray.fn.pushAll = function(valuesToPush) {
             var underlyingArray = this();

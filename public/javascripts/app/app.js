@@ -208,6 +208,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
         loadModule: loadModule,
         Ajx: Ajax,
         go: go,
-        Widget: widgetFactory
+        Widget: widgetFactory,
+        currentView: KO.observable('grid')
     }
 });
