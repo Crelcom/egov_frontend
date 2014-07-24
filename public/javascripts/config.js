@@ -49,6 +49,19 @@ requirejs([ 'knockout',
                 }
             }
         };
+        ko.bindingHandlers.popup = {
+            init: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                app.Ajx({
+                    url: valueAccessor()
+                }).done(function(response){
+                    viewModel.body = JSON.parse(response);
+                    var contain = document.body.appendChild(document.createElement("DIV"));
+                    ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
+
+                });
+            }
+        };
+        ko.virtualElements.allowedBindings.popup = true;
 
         // expand observableArray - push array of items to observableArray
         ko.observableArray.fn.pushAll = function(valuesToPush) {

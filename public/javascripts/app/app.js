@@ -33,7 +33,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
         if(module){
             module.done(
                 function(module){
-                    self.buildRoutes(module.metaData);
+//                    self.buildRoutes(module.metaData);
                     module.start();
                 }
             );
