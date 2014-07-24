@@ -1,0 +1,40 @@
+.wrapper-box{
+  text-align: left;
+  border-radius: $radius;
+  padding: 20px;
+  border:1px solid  #b6b6b6;
+
+  a{
+    color: #645c57;
+  }
+
+  @mixin marginForNew(){
+    margin: 8px 0;
+  }
+  .labelForNew{
+    @include marginForNew();
+    margin-left: 3px;
+    display: inline-block;
+    margin-right: 8px;
+  }
+  textarea{
+    width: 100%;
+  }
+  span{
+    font-size: 10px;
+  }
+  .main-button{
+    margin-top: 15px; ;
+  }
+  .wrapperDiv{
+    border:1px solid  #b6b6b6;
+    padding:20px 3px;
+    @include marginForNew();
+    .labelForNew{
+      margin: 0;
+      margin-right: 8px;
+    }
+  }
+}
+
+

@@ -1,0 +1,25 @@
+@import 'vars';
+
+// styles
+body{
+  padding-top: $padding-body;
+  padding-bottom: $padding-body;
+}
+h2 {
+  font-size: $h2Font-size;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: $font-weight;
+}
+.logout{
+  float: right;
+  cursor: pointer;
+}
+.logout:hover{
+  color:#fff;
+}
+
+@import 'new';
+@import 'mail';
+@import 'large';
+@import 'small';
