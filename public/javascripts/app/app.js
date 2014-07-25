@@ -55,7 +55,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
             var request = Ajax({
                 url: '/api/node.json',
                 method: 'POST',
-                data: JSON.stringify(obj),
+                data: obj,
                 token: true
             });
             return request;
@@ -64,7 +64,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
             var request = Ajax({
                 url: '/api/node' + id + '.json',
                 method: 'PUT',
-                data: JSON.stringify(obj),
+                data: obj,
                 token: true
             });
             return request;
