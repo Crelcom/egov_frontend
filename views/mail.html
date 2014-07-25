@@ -124,6 +124,13 @@
                         <span class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' ">Add</span>
                         <span class="btn btn-white">Address book</span>
                         <br>
+                        <table class="table">
+                            <tr>
+                                <td>Hfp</td>
+                                <td>hgfbvjd</td>
+                                <td>dhfbvfkd</td>
+                            </tr>
+                        </table>
                     </div>
 
                     <h2 class="labelForNew">Letter's body</h2><br>
@@ -158,7 +165,12 @@
                     <h4 class="modal-title">List of posts</h4>
                 </div>
                 <div class="modal-body">
-                    {{body}}
+                    <table class="table  mails tableForPopUpPosts">
+                        <tbody>
+                    <!-- ko template: {name: 'posts-in-popup', foreach: body} -->
+                    <!-- /ko -->
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
 
@@ -168,6 +180,14 @@
     </div>
 </script>
 
+
+<script type="text/html" id="posts-in-popup">
+    <tr>
+        <td>{{position_organization}}</td>
+        <td title="{{position_full_name}}">{{position_short_name}}</td>
+        <td>{{full_name}}</td>
+    </tr>
+</script>
 <!-- /ko -->
 
 <script type="text/html" id="mail-folders-tpl">

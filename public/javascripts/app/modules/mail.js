@@ -124,10 +124,13 @@ define(function () {
                 //sender: KO.observable(),
                 body: KO.observable()
             }
-            self.saveLetter = function(){
+            self.saveLetter = function(form){
                 var letter = KO.mapping.toJSON(self.obj);
                 console.log(letter);
-                self.save(letter);
+                self.save(letter).done(function(){
+                    form.reset();
+                    app.currentView('grid');
+                });
             }
         }
     }
