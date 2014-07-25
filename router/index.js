@@ -51,7 +51,6 @@ module.exports = function(express){
     // for requests to rest-server
     router.route('/api/*')
         .all(function(req, res, next){
-
             if(!req.headers.cookie && req.url !== '/api/user/login'){
                 next(401, 'You must authorize');
             }
@@ -60,11 +59,11 @@ module.exports = function(express){
                 params = {},
                 options = {
                     url: url,
-//                    headers: {
-//                        'Cookie': req.headers.cookie,
-//                        'Content-Type': 'application/json'
-//                    }
-                    headers: req.headers
+                    headers: {
+                        'Cookie': req.headers.cookie,
+                        'Content-Type': 'application/json'
+                    }
+//                    headers: req.headers
                 },
                 meth = methods[req.method];
 
@@ -78,38 +77,38 @@ module.exports = function(express){
                 }
                 res.send(body);
             }).form(params);
-
         });
 
+    // for requests to drupal admin pages
     router.route('/admin/*')
         .all(function(req, res, next) {
-        if(!req.headers.cookie){
-            next(401, 'You must authorize');
-        }
-        var path = req.url,
-            url = config.get('backend') + path,
-            params = {},
-            options = {
-                url: url,
-//                    headers: {
-//                        'Cookie': req.headers.cookie,
-//                        'Content-Type': 'application/json'
-//                    }
-                headers: req.headers
-            },
-            meth = methods[req.method];
-
-        if(req.body && !_.isEmpty(req.body)){
-            _.each(req.body, function(val, key){this[key] = val;}, params);
-        }
-
-        proxy[meth](options, function(err, httpResponse, body){
-            if (err) {
-                next(err);
+            if(!req.headers.cookie){
+                next(401, 'You must authorize');
             }
-            res.send(body);
-         }).form(params);
-    });
+            var path = req.url,
+                url = config.get('backend') + path,
+                params = {},
+                options = {
+                    url: url,
+                    headers: {
+                        'Cookie': req.headers.cookie,
+                        'Content-Type': 'application/json'
+                    }
+    //                    headers: req.headers
+                },
+                meth = methods[req.method];
+
+            if(req.body && !_.isEmpty(req.body)){
+                _.each(req.body, function(val, key){this[key] = val;}, params);
+            }
+
+            proxy[meth](options, function(err, httpResponse, body){
+                if (err) {
+                    next(err);
+                }
+                res.send(body);
+            }).form(params);
+        });
 
     return router;
 };
