@@ -56,7 +56,7 @@ requirejs([ 'knockout',
                 }).done(function(response){
                     viewModel.body = JSON.parse(response);
                     var contain = document.body.appendChild(document.createElement("DIV"));
-                    ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
+                    ko.renderTemplate('myModal', viewModel, {}, contain, "replaceNode");
 
                 });
             }

@@ -12,11 +12,8 @@ define(function () {
             {title: 'Inbox', nid: 0},
             {title: 'Sent', nid: 0},
             {title: 'Archive', nid: 'archive'}
-        ],
-        view: 'grid'
+        ]
     };
-
-    app.currentView(_defaults.view);
 
     // Folders section
     var foldersMeta = {
@@ -24,46 +21,47 @@ define(function () {
         mixin: function(){
             this.setActive = function(o, e){
                 KO.postbox.publish('setActiveTab', o.title);
-                app.currentView('grid');
+                KO.postbox.publish('gridViewBool', true);
             };
             this.activeTab = KO.observable('Inbox').subscribeTo('setActiveTab');
-            this.createMessage = function(){
-                var saveResponse = app.Ajx({
+            this.createNewMessage = function(){
+                app.currentView('newmessage');
+                /*var saveResponse = app.Ajx({
                     url: 'api/node.json',
                     method: 'POST',
                     token: true,
                     data: JSON.stringify({
-                        "title": "test create reference qee",
+                        "title": "test create reference",
                         "type": "mail_message",
                         "body":{
                             "und": [
                                 {"value":"post body value"}
                             ]
                         },
-                        "field_message_position": {
+                        "field_message_status": {
                             "und":[
-                                {"target_id":"Первый заместитель (6)"}
+                                {"target_id":"[nid:6]"}
                             ]
                         },
                         "field_sender_position":{
                             "und":[
-                                {"target_id":"Первый заместитель (6)"}
+                                {"target_id":"[nid:11]"}
                             ]
                         },
                         "field_sender_organization":{
                             "und":[
-                                {"target_id":"Министерство экономразвития и торговли РК (5)"}
+                                {"target_id":"[nid:1]"}
                             ]
                         },
                         "field_sender_user":{
                             "und":[
-                                {"target_id":"test (5)"}
+                                {"target_id":"[nid:6]"}
                             ]
                         }
                     })
                 }).done(function(response){
                     console.log(response);
-                });
+                });*/
             }
         }
     };
@@ -78,6 +76,7 @@ define(function () {
     var mailGridMeta = {
         mixin: function(){
             this.choosenMail = KO.observable().publishOn('pickMessage');
+            this.gridView = KO.observable(true).subscribeTo('gridViewBool');
         }
     };
     var _MailGridVM = app.Widget('list', mailGridMeta)
@@ -92,18 +91,25 @@ define(function () {
         mixin: function(){
             var self = this;
             self.messageData = KO.observable(null);
-            self.messageView = KO.computed(function(){
-                    if(app.currentView() !== 'message'){
+            self.messageView = KO.computed({
+                read: function(){
+                    if(_MailGridVM.gridView()){
                         _MailGridVM.choosenMail(null);
                         self.messageData(null);
                     }
-                });
+                    return !_MailGridVM.gridView();
+                },
+                write: function (value) {
+                    _MailGridVM.gridView(!value);
+                    return value;
+                }
+            });
             self.loadMessage = function(data){
                 if(data){
                     var reqMessage = self.load(data.nid);
                     reqMessage.done(function(res){
                         self.messageData(JSON.parse(res)[0]);
-                        app.currentView('message');
+                        self.messageView(true);
                     });
                 }
             };
@@ -114,7 +120,34 @@ define(function () {
     var _SingleMailVM = app.Widget('rest', singleMailMeta);
     KO.applyBindings(_SingleMailVM, document.querySelector('#single-mail'));
 
+    // New mail section
+    var newMailMeta = {
+        mixin: function(){
+            var self = this;
+            self.createPopUpForPosts = function(){
 
+            }
+        }
+    }
+    var _NewMailVM = app.Widget('rest', singleMailMeta);
+    KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
+
+
+    //Section For PopUp
+
+    var testVM = {
+        title: 'Hello test'
+        //showPopup: KO.observable().publishOn('openPopup')
+    };
+    KO.postbox.subscribe('openPopup', function() {
+            //KO.bindingHandlers.popup.update(document.querySelector('#test-popup'), function(){return {};}, {}, testVM);
+            KO.bindingHandlers.popup.init(document.querySelector('#test-popup'), function () {
+                return {};
+            }, {}, testVM);
+        }
+    );
+
+    KO.applyBindings(testVM, document.querySelector('#test-popup'));
 
     return {
         start: function(){console.log('mail started')}
