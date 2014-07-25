@@ -45,10 +45,18 @@ define(['underscore', 'deferred'], function(_, Deferred){
         var self = this;
         self.resource = meta.baseUrl;
         self.load = function(id){
-            var self = this;
             var request = Ajax({
                 url: '/' + self.resource + '.json',
                 data: {id: id}
+            });
+            return request;
+        };
+        self.save = function(obj){
+            var request = Ajax({
+                url: '/api/node.json',
+                method: 'POST',
+                data: JSON.stringify(obj),
+                token: true
             });
             return request;
         };

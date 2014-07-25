@@ -55,13 +55,13 @@ requirejs([ 'knockout',
                     url: valueAccessor()
                 }).done(function(response){
                     viewModel.body = JSON.parse(response);
+                    viewModel.targetID = element.dataset.target.replace(/#/, '');
                     var contain = document.body.appendChild(document.createElement("DIV"));
                     ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
 
                 });
             }
         };
-        ko.virtualElements.allowedBindings.popup = true;
 
         ko.bindingHandlers.viewSwitch = {
             update: function(element, valueAccessor, allBindings, viewModel, bindContext){
