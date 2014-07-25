@@ -33,6 +33,7 @@ requirejs([ 'knockout',
 
         // init KO functionality
         ko.punches.enableAll();
+        ko.mapping = mapping;
 
         // custom bindings
         ko.bindingHandlers.stopBinding = {

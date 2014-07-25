@@ -105,7 +105,7 @@
             </div>
             <div class="clearfix"></div>
         </div>
-        <!-- /ko -->
+        <!-- /ko  -->
     </div>
 </div>
 
@@ -114,20 +114,20 @@
     <div class="starter-template">
         <h1>New mail</h1>
         <div>
-            <form class="form-inline" role="form">
+            <form class="form-inline" role="form" data-bind="submit: saveLetter">
                 <div class="row-fluid wrapper-box">
                     <h2 class="labelForNew">Header</h2>
-                    <input type="text" placeholder="Введите текст" class="form-control input-xlarge" data-bind = "value: header"><br>
+                    <input type="text" placeholder="Введите текст" class="form-control input-xlarge" data-bind = "value: obj.header"><br>
 
                     <div class="wrapperDiv">
                         <h2 class="labelForNew">Addressee</h2>
-                        <span class="btn btn-white" data-toggle="modal" data-target="#myModal">Add</span>
+                        <span class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' ">Add</span>
                         <span class="btn btn-white">Address book</span>
                         <br>
                     </div>
 
                     <h2 class="labelForNew">Letter's body</h2><br>
-                    <textarea rows="10" data-bind = "value: body"></textarea><br>
+                    <textarea rows="10" data-bind = "value: obj.body"></textarea><br>
                     <a href="#">Switch to other text editor</a><br>
 
                     <div class="wrapperDiv">
@@ -149,10 +149,8 @@
 
 [% block tpls %]
 
-<!-- ko popup: '/api/positions.json' -->
-
 <script type="text/html" id="popup-tpl">
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" data-bind="attr.id: targetID">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

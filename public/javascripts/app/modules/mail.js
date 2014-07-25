@@ -119,14 +119,19 @@ define(function () {
     var newMailMeta = {
         mixin: function(){
             var self = this;
-            self.header = KO.observable();
-            self.sendaer = KO.observable();
-            self.body = KO.observable();
-            self.file = KO.observable();
-            self.save(obj)
+            self.obj = {
+                header: KO.observable(),
+                //sender: KO.observable(),
+                body: KO.observable()
+            }
+            self.saveLetter = function(){
+                var letter = KO.mapping.toJSON(self.obj);
+                console.log(letter);
+                self.save(letter);
+            }
         }
     }
-    var _NewMailVM = app.Widget('rest', singleMailMeta);
+    var _NewMailVM = app.Widget('rest', newMailMeta);
     KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
 
 
