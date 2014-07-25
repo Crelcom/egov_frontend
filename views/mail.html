@@ -117,17 +117,17 @@
             <form class="form-inline" role="form">
                 <div class="row-fluid wrapper-box">
                     <h2 class="labelForNew">Header</h2>
-                    <input type="text" placeholder="Введите текст" class="form-control input-xlarge"><br>
+                    <input type="text" placeholder="Введите текст" class="form-control input-xlarge" data-bind = "value: header"><br>
 
                     <div class="wrapperDiv">
                         <h2 class="labelForNew">Addressee</h2>
-                        <button class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind="click: showPopup">Add</button>
-                        <button class="btn btn-white">Address book</button>
+                        <span class="btn btn-white" data-toggle="modal" data-target="#myModal">Add</span>
+                        <span class="btn btn-white">Address book</span>
                         <br>
                     </div>
 
                     <h2 class="labelForNew">Letter's body</h2><br>
-                    <textarea rows="10"></textarea><br>
+                    <textarea rows="10" data-bind = "value: body"></textarea><br>
                     <a href="#">Switch to other text editor</a><br>
 
                     <div class="wrapperDiv">
@@ -143,29 +143,34 @@
     </div>
 </div>
 
-<!-- ko popup: '/api/positions.json' -->
-<!-- /ko -->
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{{title}}</h4>
-            </div>
-            <div class="modal-body">
-                {{body}}
-            </div>
-            <div class="modal-footer">
 
-            </div>
-        </div>
-    </div>
-</div>
 
 [% endblock %]
 
 [% block tpls %]
 
+<!-- ko popup: '/api/positions.json' -->
+
+<script type="text/html" id="popup-tpl">
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">List of posts</h4>
+                </div>
+                <div class="modal-body">
+                    {{body}}
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- /ko -->
 
 <script type="text/html" id="mail-folders-tpl">
     <li data-bind="click: $root.setActive, selected: 'title'">

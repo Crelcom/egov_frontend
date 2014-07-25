@@ -7,14 +7,14 @@ define(function(){
         _ = require('underscore');
 
     var testVM = {
-        title: 'Hello test'
-        //showPopup: KO.observable().publishOn('openPopup')
+        title: 'Hello test',
+        showPopup: KO.observable().publishOn('openPopup')
     };
-    //KO.postbox.subscribe('openPopup', function(){
-      //  KO.bindingHandlers.popup.update(document.querySelector('#test-popup'), function(){return {};}, {}, testVM);
-    //});
+    KO.postbox.subscribe('openPopup', function(){
+        KO.bindingHandlers.popup.update(document.querySelector('#test-popup'), function(){return {};}, {}, testVM);
+    });
 
-    //KO.applyBindings(testVM, document.querySelector('#test-popup'));
+    KO.applyBindings(testVM, document.querySelector('#test-popup'));
 
     return {
         start: function(){
