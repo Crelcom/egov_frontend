@@ -60,6 +60,15 @@ define(['underscore', 'deferred'], function(_, Deferred){
             });
             return request;
         };
+        self.update = self.delete = function(id, obj){
+            var request = Ajax({
+                url: '/api/node' + id + '.json',
+                method: 'PUT',
+                data: JSON.stringify(obj),
+                token: true
+            });
+            return request;
+        };
         if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);
     }
 
