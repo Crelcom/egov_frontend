@@ -60,11 +60,11 @@ module.exports = function(express){
                 params = {},
                 options = {
                     url: url,
-                    headers: {
-                        'Cookie': req.headers.cookie,
-                        'X-CSRF-Token': req.headers['x-csrf-token'],
-                        'Content-Type': 'application/json'
-                    }
+//                    headers: {
+//                        'Cookie': req.headers.cookie,
+//                        'Content-Type': 'application/json'
+//                    }
+                    headers: req.headers
                 },
                 meth = methods[req.method];
 
@@ -80,9 +80,6 @@ module.exports = function(express){
             }).form(params);
 
         });
-
-
-
 
     return router;
 };

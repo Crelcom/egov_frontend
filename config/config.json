@@ -1,4 +1,4 @@
 {
     "port": 3000,
-    "backend": "http://replica.loc:9090"
+    "backend": "http://egovcrm.backend.lan:9090"
 }
