@@ -62,9 +62,9 @@ module.exports = function(express){
                     url: url,
                     headers: {
                         'Cookie': req.headers.cookie,
-                        'X-CSRF-Token': req.headers['x-csrf-token'],
                         'Content-Type': 'application/json'
                     }
+//                    headers: req.headers
                 },
                 meth = methods[req.method];
 
@@ -81,8 +81,35 @@ module.exports = function(express){
 
         });
 
+    router.route('/admin/*')
+        .all(function(req, res, next) {
+        if(!req.headers.cookie){
+            next(401, 'You must authorize');
+        }
+        var path = req.url,
+            url = config.get('backend') + path,
+            params = {},
+            options = {
+                url: url,
+                    headers: {
+                        'Cookie': req.headers.cookie,
+                        'Content-Type': 'application/json'
+                    }
+//                headers: req.headers
+            },
+            meth = methods[req.method];
 
+        if(req.body && !_.isEmpty(req.body)){
+            _.each(req.body, function(val, key){this[key] = val;}, params);
+        }
 
+        proxy[meth](options, function(err, httpResponse, body){
+            if (err) {
+                next(err);
+            }
+            res.send(body);
+         }).form(params);
+    });
 
     return router;
 };
