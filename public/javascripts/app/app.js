@@ -1,7 +1,10 @@
-define(['underscore', 'deferred'], function(_, Deferred){
+define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
     'use strict';
 
     var KO = require('knockout');
+
+    // view for module
+    var _currentView = KO.observable();
 
     // async loads modules
     function loadModule(name){
@@ -15,30 +18,25 @@ define(['underscore', 'deferred'], function(_, Deferred){
         return false;
     }
 
-
-    // Constructors:
-    // Route constructor
-    function _RouterConstructor(){
-        // parse meta data and build hash-routes
-        this.buildRoutes = function(meta){
-            //fill routes
-        };
-        this.init();
-    }
-    _RouterConstructor.prototype.init = function(){
+    function _moduleInit(){
         // look to location path and load module and meta data for uiRouter
         var path = window.location.pathname.replace(/[\/]/g, ''),
             module = loadModule(path),
+            hash = window.location.hash.replace(/#/, ''),
             self = this;
         if(module){
-            module.done(
-                function(module){
-//                    self.buildRoutes(module.metaData);
-                    module.start();
-                }
-            );
+            module.done(function(module){
+                module.start();
+                dispatch.go(hash);
+            });
         }
-    };
+    }
+
+    dispatch.on("/:view", function(params) {
+        _currentView(params.view);
+    });
+
+    // Constructors:
 
     // Rest constructor
     function _RestConstructor(meta){
@@ -137,7 +135,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
 
     // load main module for current page
     function appStart(){
-        var uiRouter = new _RouterConstructor();
+        _moduleInit();
         KO.applyBindings(new _appVM());
     }
 
@@ -226,6 +224,6 @@ define(['underscore', 'deferred'], function(_, Deferred){
         Ajx: Ajax,
         go: go,
         Widget: widgetFactory,
-        currentView: KO.observable()
+        currentView: _currentView
     }
 });

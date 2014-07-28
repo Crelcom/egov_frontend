@@ -24,7 +24,6 @@ define(function () {
         mixin: function(){
             this.setActive = function(o, e){
                 KO.postbox.publish('setActiveTab', o.title);
-                app.currentView('grid');
             };
             this.activeTab = KO.observable('Inbox').subscribeTo('setActiveTab');
             this.createMessage = function(){
@@ -103,7 +102,6 @@ define(function () {
                     var reqMessage = self.load(data.nid);
                     reqMessage.done(function(res){
                         self.messageData(JSON.parse(res)[0]);
-                        app.currentView('message');
                     });
                 }
             };

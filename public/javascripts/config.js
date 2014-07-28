@@ -15,6 +15,9 @@ requirejs.config({
     shim: {
         underscore: {
             exports: '_'
+        },
+        dispatch: {
+            exports: 'dispatch'
         }
     }
 });
