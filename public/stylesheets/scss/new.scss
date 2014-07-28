@@ -36,9 +36,15 @@
   }
 }
 .tableForPopUpPosts{
+  td:first-child{
+    width: 1%;
+  }
   td{
     width: 5%;
   }
 }
 
+.modal-content{
+  left:-10%;
+}
 

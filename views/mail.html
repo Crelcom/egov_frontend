@@ -153,10 +153,18 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">List of position</h4>
+                    <h4 class="modal-title">Add a recipients</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table  mails tableForPopUpPosts">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td><input type="text" placeholder="Position organization" class="form-control"></td>
+                                <td><input type="text" placeholder="Position name" class="form-control"></td>
+                                <td><input type="text" placeholder="Full name" class="form-control"></td>
+                            </tr>
+                        </thead>
                         <tbody>
                     <!-- ko template: {name: 'posts-in-popup', foreach: body} -->
                     <!-- /ko -->
@@ -164,7 +172,8 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-
+                    <button class="btn  btn-white main-button">Select</button>
+                    <button class="btn  btn-white main-button">Reset</button>
                 </div>
             </div>
         </div>
@@ -174,6 +183,7 @@
 
 <script type="text/html" id="posts-in-popup">
     <tr>
+        <td><input type = "checkbox"></td>
         <td>{{position_organization}}</td>
         <td title="{{position_full_name}}">{{position_short_name}}</td>
         <td>{{full_name}}</td>

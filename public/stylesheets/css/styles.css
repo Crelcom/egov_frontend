@@ -207,8 +207,13 @@ table.table.mails tr.unreaded td {
       margin-right: 8px;
       font-weight: normal; }
 
+.tableForPopUpPosts td:first-child {
+  width: 1%; }
 .tableForPopUpPosts td {
   width: 5%; }
+
+.modal-content {
+  left: -10%; }
 
 .labelForVisibleForm {
   display: none; }
