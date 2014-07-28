@@ -79,6 +79,34 @@ module.exports = function(express){
             }).form(params);
         });
 
+    router.route('/node/add')
+        .all(function(req, res, next) {
+            var path = req.url,
+                addUrl = config.get('backend') + path,
+                isAdminUrl = config.get('backend') + '/api/is_admin',
+                params = {},
+                headers = {'Cookie': req.headers.cookie, 'Content-Type': 'application/json'},
+                method = methods[req.method],
+                is_admin = 0;
+
+            proxy['get']({url: isAdminUrl, headers: headers}, function(err, httpResponse, body) {
+                if (err) {
+                    next(err);
+                }
+                is_admin = parseInt(body);
+
+                if (is_admin) {
+                    proxy[method]({url: addUrl, headers: headers}, function(err, httpResponse, body) {
+                        if (err) {
+                            next(err);
+                        }
+                        res.send(body);
+                    });
+                }
+            });
+        });
+
+
     // for requests to drupal admin pages
     router.route('/admin/*')
         .all(function(req, res, next) {
