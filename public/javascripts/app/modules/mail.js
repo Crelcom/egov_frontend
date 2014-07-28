@@ -23,44 +23,9 @@ define(function () {
         default: defaults.folders,
         mixin: function(){
             this.fold = KO.observable('Inbox');
-            this.createMessage = function(){
-                var saveResponse = app.Ajx({
-                    url: 'api/node.json',
-                    method: 'POST',
-                    token: true,
-                    data: JSON.stringify({
-                        "title": "test create reference qee",
-                        "type": "mail_message",
-                        "body":{
-                            "und": [
-                                {"value":"post body value"}
-                            ]
-                        },
-                        "field_message_position": {
-                            "und":[
-                                {"target_id":"Первый заместитель (6)"}
-                            ]
-                        },
-                        "field_sender_position":{
-                            "und":[
-                                {"target_id":"Первый заместитель (6)"}
-                            ]
-                        },
-                        "field_sender_organization":{
-                            "und":[
-                                {"target_id":"Министерство экономразвития и торговли РК (5)"}
-                            ]
-                        },
-                        "field_sender_user":{
-                            "und":[
-                                {"target_id":"test (5)"}
-                            ]
-                        }
-                    })
-                }).done(function(response){
-                    console.log(response);
-                });
-            }
+            this.createNewMessage = function(){
+                app.href('/new');
+            };
         }
     };
     var _FoldersVM = app.Widget('list', foldersMeta)
@@ -111,6 +76,27 @@ define(function () {
     var _SingleMailVM = app.Widget('rest', singleMailMeta);
     KO.applyBindings(_SingleMailVM, document.querySelector('#single-mail'));
 
+    // New mail section
+    var newMailMeta = {
+        viewName: 'new',
+        mixin: function(){
+            var self = this;
+            self.obj = {
+                header: KO.observable(),
+                //sender: KO.observable(),
+                body: KO.observable()
+            };
+            self.saveLetter = function(form){
+                var letter = KO.mapping.toJSON(self.obj);
+                self.save(letter).done(function(){
+                    form.reset();
+                    app.hash('/grid/fold=Inbox');
+                });
+            }
+        }
+    };
+    var _NewMailVM = app.Widget('rest', newMailMeta);
+    KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
 
 
     return {

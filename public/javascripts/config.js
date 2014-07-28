@@ -36,6 +36,7 @@ requirejs([ 'knockout',
 
         // init KO functionality
         ko.punches.enableAll();
+        ko.mapping = mapping;
 
         // custom bindings
         ko.bindingHandlers.stopBinding = {
@@ -61,7 +62,7 @@ requirejs([ 'knockout',
                     viewModel.targetID = element.dataset.target.replace(/#/, '');
                     var contain = document.body.appendChild(document.createElement("DIV"));
                     ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
-
+                    console.log(JSON.parse(response));
                 });
             }
         };
