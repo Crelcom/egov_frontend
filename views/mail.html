@@ -120,11 +120,17 @@
 
                     <div class="wrapperDiv">
                         <label class="labelForNew">Recipient</label>
-                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' " value="Add">
-                        <input type = "button" class="btn btn-white" value = "Address book">
+                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' , click:reset" value="Add">
+                        <input type = "button" class="btn btn-white" value = "Address book" data-bind="click: check">
+                        <table class="table  mails adress-book">
+                            <tbody id = "chosenmail">
+                            <!-- ko template: {name: 'chosen-mail', foreach: items } -->
+                            <!-- /ko -->
+                            </tbody>
+                        </table>
                         <br>
                     </div>
-
+                    
                     <label class="labelForNew">Letter's body</label><br>
                     <textarea rows="10" data-bind = "value: obj.body"></textarea><br>
 
@@ -159,7 +165,7 @@
                     <table class="table  mails tableForPopUpPosts">
                         <thead>
                             <tr>
-                                <td></td>
+                                <td><input type="button" value="Reset" class="btn  btn-white main-button"></td>
                                 <td><input type="text" placeholder="Position organization" class="form-control"></td>
                                 <td><input type="text" placeholder="Position name" class="form-control"></td>
                                 <td><input type="text" placeholder="Full name" class="form-control"></td>
@@ -172,8 +178,8 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn  btn-white main-button">Select</button>
-                    <button class="btn  btn-white main-button">Reset</button>
+                    <button class="btn  btn-white main-button" data-bind="click:$root.check" data-dismiss="modal" aria-hidden="true">Select</button>
+                    <button class="btn  btn-white main-button" data-bind="click:reset">Reset</button>
                 </div>
             </div>
         </div>
@@ -183,9 +189,17 @@
 
 <script type="text/html" id="posts-in-popup">
     <tr>
-        <td><input type = "checkbox"></td>
+        <td><input type = "checkbox" data-bind="checked: $root.chosenItems, checkedValue: $data.nid"></td>
         <td>{{position_organization}}</td>
-        <td title="{{position_full_name}}">{{position_short_name}}</td>
+        <td data-bind="attr.title: position_full_name">{{position_short_name}}</td>
+        <td>{{full_name}}</td>
+    </tr>
+</script>
+
+<script type="text/html" id="chosen-mail">
+    <tr>
+        <td>{{position_organization}}</td>
+        <td data-bind="attr.title: position_full_name">{{position_short_name}}</td>
         <td>{{full_name}}</td>
     </tr>
 </script>

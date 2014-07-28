@@ -36,11 +36,21 @@
   }
 }
 .tableForPopUpPosts{
+  tr{
+    cursor: pointer;
+  }
   td:first-child{
     width: 1%;
   }
   td{
     width: 5%;
+  }
+}
+
+.adress-book{
+  margin-top: 20px;
+  td:first-child{
+    width: 40%;
   }
 }
 

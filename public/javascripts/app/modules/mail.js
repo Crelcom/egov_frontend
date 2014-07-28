@@ -119,24 +119,38 @@ define(function () {
     var newMailMeta = {
         mixin: function(){
             var self = this;
+            self.BoolCheck = KO.observable(false);
             self.obj = {
                 header: KO.observable(),
                 //sender: KO.observable(),
                 body: KO.observable()
-            }
+            };
+            self.items = KO.observableArray();
             self.saveLetter = function(form){
                 var letter = KO.mapping.toJSON(self.obj);
-                console.log(letter);
                 self.save(letter).done(function(){
                     form.reset();
                     app.currentView('grid');
                 });
+            };
+            self.chosenItems =  KO.observableArray([]);
+            self.check = function (){
+                for (var i=0; i<self.body.length; i++){
+                    for(var j=0; j< self.chosenItems().length;j++){
+                        if(self.body[i].nid == self.chosenItems()[j]){
+                            self.items.push(self.body[i]);
+                        }
+                    }
+                }
+            };
+            self.reset = function(){
+                self.items([]);
+                self.chosenItems([]);
             }
         }
     }
     var _NewMailVM = app.Widget('rest', newMailMeta);
     KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
-
 
     return {
         start: function(){console.log('mail started')}
