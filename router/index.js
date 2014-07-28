@@ -51,7 +51,6 @@ module.exports = function(express){
     // for requests to rest-server
     router.route('/api/*')
         .all(function(req, res, next){
-
             if(!req.headers.cookie && req.url !== '/api/user/login'){
                 next(401, 'You must authorize');
             }
@@ -78,38 +77,66 @@ module.exports = function(express){
                 }
                 res.send(body);
             }).form(params);
-
         });
 
+    router.route('/node/add')
+        .all(function(req, res, next) {
+            var path = req.url,
+                addUrl = config.get('backend') + path,
+                isAdminUrl = config.get('backend') + '/api/is_admin',
+                params = {},
+                headers = {'Cookie': req.headers.cookie, 'Content-Type': 'application/json'},
+                method = methods[req.method],
+                is_admin = 0;
+
+            proxy['get']({url: isAdminUrl, headers: headers}, function(err, httpResponse, body) {
+                if (err) {
+                    next(err);
+                }
+                is_admin = parseInt(body);
+
+                if (is_admin) {
+                    proxy[method]({url: addUrl, headers: headers}, function(err, httpResponse, body) {
+                        if (err) {
+                            next(err);
+                        }
+                        res.send(body);
+                    });
+                }
+            });
+        });
+
+
+    // for requests to drupal admin pages
     router.route('/admin/*')
         .all(function(req, res, next) {
-        if(!req.headers.cookie){
-            next(401, 'You must authorize');
-        }
-        var path = req.url,
-            url = config.get('backend') + path,
-            params = {},
-            options = {
-                url: url,
+            if(!req.headers.cookie){
+                next(401, 'You must authorize');
+            }
+            var path = req.url,
+                url = config.get('backend') + path,
+                params = {},
+                options = {
+                    url: url,
                     headers: {
                         'Cookie': req.headers.cookie,
                         'Content-Type': 'application/json'
                     }
-//                headers: req.headers
-            },
-            meth = methods[req.method];
+    //                    headers: req.headers
+                },
+                meth = methods[req.method];
 
-        if(req.body && !_.isEmpty(req.body)){
-            _.each(req.body, function(val, key){this[key] = val;}, params);
-        }
-
-        proxy[meth](options, function(err, httpResponse, body){
-            if (err) {
-                next(err);
+            if(req.body && !_.isEmpty(req.body)){
+                _.each(req.body, function(val, key){this[key] = val;}, params);
             }
-            res.send(body);
-         }).form(params);
-    });
+
+            proxy[meth](options, function(err, httpResponse, body){
+                if (err) {
+                    next(err);
+                }
+                res.send(body);
+            }).form(params);
+        });
 
     return router;
 };
