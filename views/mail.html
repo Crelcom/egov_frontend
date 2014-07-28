@@ -13,7 +13,7 @@
             <!-- ko template: {name: 'mail-folders-tpl', foreach: data} -->
             <!-- /ko -->
             <li><a href="#">+</a></li>
-            <li data-bind="click: createNewMessage">New Message</li>
+            <li data-bind="click: createNewMessage"><a href = "#"> New Message</a></li>
         </ul>
 
         <!--Grid View-->
@@ -112,33 +112,24 @@
 <!--New Message View-->
 <div class="container" id = "newmail" data-bind="viewSwitch: 'newmessage' ">
     <div class="starter-template">
-        <h1>New mail</h1>
         <div>
             <form class="form-inline" role="form" data-bind="submit: saveLetter">
                 <div class="row-fluid wrapper-box">
-                    <h2 class="labelForNew">Header</h2>
-                    <input type="text" placeholder="Введите текст" class="form-control input-xlarge" data-bind = "value: obj.header"><br>
+                    <label class="labelForNew">Title</label>
+                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: obj.header"><br>
 
                     <div class="wrapperDiv">
-                        <h2 class="labelForNew">Addressee</h2>
-                        <span class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' ">Add</span>
-                        <span class="btn btn-white">Address book</span>
+                        <label class="labelForNew">Recipient</label>
+                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' " value="Add">
+                        <input type = "button" class="btn btn-white" value = "Address book">
                         <br>
-                        <table class="table">
-                            <tr>
-                                <td>Hfp</td>
-                                <td>hgfbvjd</td>
-                                <td>dhfbvfkd</td>
-                            </tr>
-                        </table>
                     </div>
 
-                    <h2 class="labelForNew">Letter's body</h2><br>
+                    <label class="labelForNew">Letter's body</label><br>
                     <textarea rows="10" data-bind = "value: obj.body"></textarea><br>
-                    <a href="#">Switch to other text editor</a><br>
 
                     <div class="wrapperDiv">
-                        <h2 class="labelForNew">Attach a file</h2>
+                        <label class="labelForNew">Attach a file</label>
                         <input type="file"><br>
                         <span>Max size: 1.95 Gb.</span><br>
                     </div>
@@ -162,7 +153,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">List of posts</h4>
+                    <h4 class="modal-title">List of position</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table  mails tableForPopUpPosts">
