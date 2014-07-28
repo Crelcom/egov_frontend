@@ -50,6 +50,10 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
 
         typeof view === 'function' ? view(viewParams[2]) : view = viewParams[2];
     });
+    // single path callback
+    dispatch.on("/:view", function(params){
+        _currentView(params.view);
+    });
 
     // Constructors:
 

@@ -24,6 +24,7 @@ define(function () {
         mixin: function(){
             this.fold = KO.observable('Inbox');
             this.createNewMessage = function(){
+                this.fold('New Message');
                 app.href('/new');
             };
         }

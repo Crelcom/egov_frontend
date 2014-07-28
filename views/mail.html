@@ -13,7 +13,7 @@
             <!-- ko template: {name: 'mail-folders-tpl', foreach: data} -->
             <!-- /ko -->
             <li><a href="#">+</a></li>
-            <li data-bind="click: createNewMessage"><a href = "#"> New Message</a></li>
+            <li data-bind=" selected: 'New Message', click: createNewMessage "><a href = "#/new">New Message</a></li>
         </ul>
 
         <!--Grid View-->
