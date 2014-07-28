@@ -29,42 +29,6 @@ define(function () {
             this.activeTab = KO.observable('Inbox').subscribeTo('setActiveTab');
             this.createNewMessage = function(){
                 app.currentView('newmessage');
-                /*var saveResponse = app.Ajx({
-                    url: 'api/node.json',
-                    method: 'POST',
-                    token: true,
-                    data: JSON.stringify({
-                        "title": "test create reference qee",
-                        "type": "mail_message",
-                        "body":{
-                            "und": [
-                                {"value":"post body value"}
-                            ]
-                        },
-                        "field_message_position": {
-                            "und":[
-                                {"target_id":"Первый заместитель (6)"}
-                            ]
-                        },
-                        "field_sender_position":{
-                            "und":[
-                                {"target_id":"Первый заместитель (6)"}
-                            ]
-                        },
-                        "field_sender_organization":{
-                            "und":[
-                                {"target_id":"Министерство экономразвития и торговли РК (5)"}
-                            ]
-                        },
-                        "field_sender_user":{
-                            "und":[
-                                {"target_id":"test (5)"}
-                            ]
-                        }
-                    })
-                }).done(function(response){
-                    console.log(response);
-                });*/
             }
         }
     };
@@ -123,17 +87,17 @@ define(function () {
                 header: KO.observable(),
                 //sender: KO.observable(),
                 body: KO.observable()
-            }
+            };
             self.saveLetter = function(form){
                 var letter = KO.mapping.toJSON(self.obj);
-                console.log(letter);
+//                console.log(letter);
                 self.save(letter).done(function(){
                     form.reset();
                     app.currentView('grid');
                 });
             }
         }
-    }
+    };
     var _NewMailVM = app.Widget('rest', newMailMeta);
     KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
 
