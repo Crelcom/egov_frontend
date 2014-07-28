@@ -60,11 +60,10 @@ module.exports = function(express){
                 params = {},
                 options = {
                     url: url,
-//                    headers: {
-//                        'Cookie': req.headers.cookie,
-//                        'Content-Type': 'application/json'
-//                    }
-                    headers: req.headers
+                    headers: {
+                        'Cookie': req.headers.cookie,
+                        'Content-Type': 'application/json'
+                    }
                 },
                 meth = methods[req.method];
 

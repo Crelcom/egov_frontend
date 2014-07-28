@@ -7,61 +7,26 @@ define(function () {
         _ = require('underscore');
 
     //default values
-    var _defaults = {
+    var defaults = {
         folders: [
             {title: 'Inbox', nid: 0},
             {title: 'Sent', nid: 0},
             {title: 'Archive', nid: 'archive'}
-        ]
+        ],
+        view: '/grid/fold=Inbox'
     };
+
 
     // Folders section
     var foldersMeta = {
-        default: _defaults.folders,
+        viewName: 'grid',
+        default: defaults.folders,
         mixin: function(){
-            this.setActive = function(o, e){
-                KO.postbox.publish('setActiveTab', o.title);
-                KO.postbox.publish('gridViewBool', true);
+            this.fold = KO.observable('Inbox');
+            this.createNewMessage = function(){
+                this.fold('New Message');
+                app.href('/new');
             };
-            this.activeTab = KO.observable('Inbox').subscribeTo('setActiveTab');
-            this.createMessage = function(){
-                var saveResponse = app.Ajx({
-                    url: 'api/node.json',
-                    method: 'POST',
-                    token: true,
-                    data: JSON.stringify({
-                        "title": "test create reference",
-                        "type": "mail_message",
-                        "body":{
-                            "und": [
-                                {"value":"post body value"}
-                            ]
-                        },
-                        "field_message_status": {
-                            "und":[
-                                {"target_id":"[nid:6]"}
-                            ]
-                        },
-                        "field_sender_position":{
-                            "und":[
-                                {"target_id":"[nid:11]"}
-                            ]
-                        },
-                        "field_sender_organization":{
-                            "und":[
-                                {"target_id":"[nid:1]"}
-                            ]
-                        },
-                        "field_sender_user":{
-                            "und":[
-                                {"target_id":"[nid:6]"}
-                            ]
-                        }
-                    })
-                }).done(function(response){
-                    console.log(response);
-                });
-            }
         }
     };
     var _FoldersVM = app.Widget('list', foldersMeta)
@@ -74,8 +39,10 @@ define(function () {
     // Mails grid section
     var mailGridMeta = {
         mixin: function(){
-            this.choosenMail = KO.observable().publishOn('pickMessage');
-            this.gridView = KO.observable(true).subscribeTo('gridViewBool');
+            this.choosenMail = function(o, e){
+                var path = '/message/loadID=' + o.nid;
+                app.href(path);
+            }
         }
     };
     var _MailGridVM = app.Widget('list', mailGridMeta)
@@ -86,42 +53,55 @@ define(function () {
 
     // Single mail section
     var singleMailMeta = {
+        viewName: 'message',
         baseUrl: 'api/message',
         mixin: function(){
             var self = this;
             self.messageData = KO.observable(null);
-            self.messageView = KO.computed({
-                read: function(){
-                    if(_MailGridVM.gridView()){
-                        _MailGridVM.choosenMail(null);
+            self.messageView = KO.computed(function(){
+                    if(app.currentView() !== 'message'){
                         self.messageData(null);
                     }
-                    return !_MailGridVM.gridView();
-                },
-                write: function (value) {
-                    _MailGridVM.gridView(!value);
-                    return value;
-                }
-            });
-            self.loadMessage = function(data){
+                });
+            self.loadID = function(data){
                 if(data){
-                    var reqMessage = self.load(data.nid);
+                    var reqMessage = self.load(data);
                     reqMessage.done(function(res){
                         self.messageData(JSON.parse(res)[0]);
-                        self.messageView(true);
                     });
                 }
             };
-            KO.postbox.subscribe("pickMessage", self.loadMessage);
         }
     };
 
     var _SingleMailVM = app.Widget('rest', singleMailMeta);
     KO.applyBindings(_SingleMailVM, document.querySelector('#single-mail'));
 
+    // New mail section
+    var newMailMeta = {
+        viewName: 'new',
+        mixin: function(){
+            var self = this;
+            self.obj = {
+                header: KO.observable(),
+                //sender: KO.observable(),
+                body: KO.observable()
+            };
+            self.saveLetter = function(form){
+                var letter = KO.mapping.toJSON(self.obj);
+                self.save(letter).done(function(){
+                    form.reset();
+                    app.hash('/grid/fold=Inbox');
+                });
+            }
+        }
+    };
+    var _NewMailVM = app.Widget('rest', newMailMeta);
+    KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
 
 
     return {
-        start: function(){console.log('mail started')}
+        start: function(){console.log('mail started')},
+        default: defaults
     };
 });
