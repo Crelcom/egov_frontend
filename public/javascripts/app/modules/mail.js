@@ -134,18 +134,33 @@ define(function () {
                 });
             };
             self.chosenItems =  KO.observableArray([]);
-            self.check = function (){
+            self.check = function () {
                 for (var i=0; i<self.body.length; i++){
                     for(var j=0; j< self.chosenItems().length;j++){
                         if(self.body[i].nid == self.chosenItems()[j]){
-                            self.items.push(self.body[i]);
+                                 self.items.push(self.body[i]);
                         }
                     }
                 }
             };
+            self.chosenFunc = KO.computed(
+                {
+                    read: function(){self.chosenItems()},
+                    write: function(){console.log('write')}
+                }
+            )
             self.reset = function(){
                 self.items([]);
                 self.chosenItems([]);
+            }
+            self.label = function(e){
+                console.log(e.nid);
+                if(self.chosenItems().indexOf(e.nid)== -1){
+                    self.chosenItems.push(e.nid);
+                }
+                else{
+                    self.chosenItems.splice(self.chosenItems.indexOf(e.nid),1);
+                }
             }
         }
     }

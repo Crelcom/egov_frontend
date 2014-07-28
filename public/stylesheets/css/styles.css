@@ -209,15 +209,15 @@ table.table.mails tr.unreaded td {
 
 .tableForPopUpPosts tr {
   cursor: pointer; }
-.tableForPopUpPosts td:first-child {
-  width: 1%; }
-.tableForPopUpPosts td {
-  width: 5%; }
 
 .adress-book {
   margin-top: 20px; }
-  .adress-book td:first-child {
-    width: 40%; }
+
+.td {
+  width: 40%; }
+
+.inp-check {
+  width: 15px; }
 
 .modal-content {
   left: -10%; }

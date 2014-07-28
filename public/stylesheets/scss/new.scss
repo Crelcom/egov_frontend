@@ -39,21 +39,19 @@
   tr{
     cursor: pointer;
   }
-  td:first-child{
-    width: 1%;
-  }
-  td{
-    width: 5%;
-  }
 }
-
 .adress-book{
   margin-top: 20px;
   td:first-child{
-    width: 40%;
+
   }
 }
-
+.td{
+  width: 40%;
+}
+.inp-check{
+  width: 15px;
+}
 .modal-content{
   left:-10%;
 }
