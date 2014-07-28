@@ -7,25 +7,22 @@ define(function () {
         _ = require('underscore');
 
     //default values
-    var _defaults = {
+    var defaults = {
         folders: [
             {title: 'Inbox', nid: 0},
             {title: 'Sent', nid: 0},
             {title: 'Archive', nid: 'archive'}
         ],
-        view: 'grid'
+        view: '/grid/fold=Inbox'
     };
 
-    app.currentView(_defaults.view);
 
     // Folders section
     var foldersMeta = {
-        default: _defaults.folders,
+        viewName: 'grid',
+        default: defaults.folders,
         mixin: function(){
-            this.setActive = function(o, e){
-                KO.postbox.publish('setActiveTab', o.title);
-            };
-            this.activeTab = KO.observable('Inbox').subscribeTo('setActiveTab');
+            this.fold = KO.observable('Inbox');
             this.createMessage = function(){
                 var saveResponse = app.Ajx({
                     url: 'api/node.json',
@@ -76,7 +73,10 @@ define(function () {
     // Mails grid section
     var mailGridMeta = {
         mixin: function(){
-            this.choosenMail = KO.observable().publishOn('pickMessage');
+            this.choosenMail = function(o, e){
+                var path = '/message/loadID=' + o.nid;
+                app.href(path);
+            }
         }
     };
     var _MailGridVM = app.Widget('list', mailGridMeta)
@@ -87,25 +87,24 @@ define(function () {
 
     // Single mail section
     var singleMailMeta = {
+        viewName: 'message',
         baseUrl: 'api/message',
         mixin: function(){
             var self = this;
             self.messageData = KO.observable(null);
             self.messageView = KO.computed(function(){
                     if(app.currentView() !== 'message'){
-                        _MailGridVM.choosenMail(null);
                         self.messageData(null);
                     }
                 });
-            self.loadMessage = function(data){
+            self.loadID = function(data){
                 if(data){
-                    var reqMessage = self.load(data.nid);
+                    var reqMessage = self.load(data);
                     reqMessage.done(function(res){
                         self.messageData(JSON.parse(res)[0]);
                     });
                 }
             };
-            KO.postbox.subscribe("pickMessage", self.loadMessage);
         }
     };
 
@@ -115,6 +114,7 @@ define(function () {
 
 
     return {
-        start: function(){console.log('mail started')}
+        start: function(){console.log('mail started')},
+        default: defaults
     };
 });

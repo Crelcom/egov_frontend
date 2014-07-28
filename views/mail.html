@@ -108,8 +108,8 @@
 [% block tpls %]
 
 <script type="text/html" id="mail-folders-tpl">
-    <li data-bind="click: $root.setActive, selected: 'title'">
-        <a data-bind="attr.href: '/mail#/grid/'">{{title}}</a>
+    <li data-bind=" selected: 'title' ">
+        <a data-bind=" attr.href: '/mail#/grid/fold='+title ">{{title}}</a>
     </li>
 </script>
 

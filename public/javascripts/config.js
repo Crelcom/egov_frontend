@@ -45,7 +45,7 @@ requirejs([ 'knockout',
         };
         ko.bindingHandlers.selected = {
             update: function(element, valueAccessor, allBindings, viewModel, bindingContext){
-                if(bindingContext.$root.activeTab() === viewModel[valueAccessor()]){
+                if(bindingContext.$root.fold() === viewModel[valueAccessor()]){
                     return ko.bindingHandlers.css.update(element, function(){return 'active';});
                 }else {
                     return ko.bindingHandlers.css.update(element, function(){return '';});

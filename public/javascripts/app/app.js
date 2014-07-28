@@ -3,8 +3,12 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
 
     var KO = require('knockout');
 
-    // view for module
-    var _currentView = KO.observable();
+    // current view and module
+    var _module = {},
+        _currentView = KO.observable();
+
+    // views init
+    _module._views = {};
 
     // async loads modules
     function loadModule(name){
@@ -18,22 +22,33 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
         return false;
     }
 
+    // look to location path and load module and get view from hash
     function _moduleInit(){
-        // look to location path and load module and meta data for uiRouter
         var path = window.location.pathname.replace(/[\/]/g, ''),
             module = loadModule(path),
             hash = window.location.hash.replace(/#/, ''),
             self = this;
         if(module){
             module.done(function(module){
-                module.start();
-                dispatch.go(hash);
+                KO.utils.extend(_module, module);
+                _module.start();
+                if(hash && hash !== ''){
+                    dispatch.go(hash);
+                }else{
+                    dispatch.go(_module.default.view);
+                }
             });
         }
     }
 
-    dispatch.on("/:view", function(params) {
+    // hash-router callback
+    // set view and trigger method from url
+    dispatch.on("/:view/:action", function(params) {
         _currentView(params.view);
+        var viewParams = params.action.match(/(.+)=(.+)/),
+            view = _module._views[params.view][viewParams[1]];
+
+        typeof view === 'function' ? view(viewParams[2]) : view = viewParams[2];
     });
 
     // Constructors:
@@ -105,11 +120,12 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
             if(storage[name] && typeof storage[name] === 'function'){
                 storage[name].call(self, data);
             }
+            if(data.viewName) _module._views[data.viewName] = self;
         }
         Widget.prototype.extend = function(type, data){
             var self = this;
             if(type && typeof type === 'string'){
-                KO.utils.extend(self, new _RestConstructor(data));
+                KO.utils.extend(self, new storage[type](data));
             }
             return self;
         };
@@ -209,9 +225,14 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
         localStorage.userData = JSON.stringify(user);
     });
 
+    // for modules
     function go(path){
         // @todo escape from danger characters
         window.location.assign(path);
+    }
+    // for views
+    function href(path){
+        dispatch.go(path);
     }
 
 
@@ -223,6 +244,7 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
         loadModule: loadModule,
         Ajx: Ajax,
         go: go,
+        href: href,
         Widget: widgetFactory,
         currentView: _currentView
     }
