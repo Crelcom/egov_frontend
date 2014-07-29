@@ -110,13 +110,25 @@ define(function () {
                 else{
                     self.chosenItems.splice(self.chosenItems.indexOf(e),1);
                 }
-            }
+            };
             self.deleteElement = function(e){
                 self.items.splice(self.items.indexOf(e),1);
+            };
+            self.activeFilters = {
+                position_organization:KO.observable(),
+                position_full_name : KO.observable(),
+                full_name:KO.observable()
+            };
+            self.setActiveFilter = function(){
+                var obj = KO.mapping.toJS(self.activeFilters);
+                obj = _.each(obj,function(val, ind){
+                    if (val == undefined) delete obj[ind];
+                })
+                self.filter(obj,self.body);
             }
         }
     };
-    var _NewMailVM = app.Widget('rest', newMailMeta);
+    var _NewMailVM = app.Widget('list', newMailMeta).extend('rest', {baseUrl: 'api/node'});
     KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
 
     return {

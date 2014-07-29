@@ -107,6 +107,23 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
             );
             return self;
         };
+        self.filter = function(obj, arr){
+            var data = arr || self.data;
+            var filtered = _.filter(data, function(val){
+                var res = _.reduce(obj, function(memo, value, key){
+                    if(val[key].toLowerCase().indexOf(value.toLowerCase()) !== -1){
+                        memo.push(1);
+                    }else{
+                        memo.push(0);
+                    }
+                    return memo;
+                }, []);
+                if(res.indexOf(0) === -1){
+                    return true;
+                }
+            });
+            console.log(filtered);
+        };
         // user can expand default properties from mixin
         if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);
     }

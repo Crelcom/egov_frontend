@@ -159,16 +159,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Add a recipients</h4>
+                    <h4 class="modal-title">Add recipients</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table  mails tableForPopUpPosts">
                         <thead>
                             <tr>
-                                <td><input type="button" value="Reset" class="btn  btn-white main-button"></td>
-                                <td><input type="text" placeholder="Position organization" class="form-control"></td>
-                                <td><input type="text" placeholder="Position name" class="form-control"></td>
-                                <td><input type="text" placeholder="Full name" class="form-control"></td>
+                                <td><input type="button" value="Find" class="btn  btn-white main-button" data-bind="click: setActiveFilter"></td>
+                                <td><input type="text" placeholder="Position organization" class="form-control" data-bind = "value: $root.activeFilters.position_organization"></td>
+                                <td><input type="text" placeholder="Position name" class="form-control" data-bind = "value: $root.activeFilters.position_full_name"></td>
+                                <td><input type="text" placeholder="Full name" class="form-control" data-bind = "value: $root.activeFilters.full_name"></td>
                             </tr>
                         </thead>
                         <tbody>
