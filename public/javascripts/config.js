@@ -15,6 +15,9 @@ requirejs.config({
     shim: {
         underscore: {
             exports: '_'
+        },
+        dispatch: {
+            exports: 'dispatch'
         }
     }
 });
@@ -33,6 +36,7 @@ requirejs([ 'knockout',
 
         // init KO functionality
         ko.punches.enableAll();
+        ko.mapping = mapping;
 
         // custom bindings
         ko.bindingHandlers.stopBinding = {
@@ -42,13 +46,52 @@ requirejs([ 'knockout',
         };
         ko.bindingHandlers.selected = {
             update: function(element, valueAccessor, allBindings, viewModel, bindingContext){
-                if(bindingContext.$root.activeTab() === viewModel[valueAccessor()]){
+                if(bindingContext.$root.fold() === viewModel[valueAccessor()]){
                     return ko.bindingHandlers.css.update(element, function(){return 'active';});
-                }else {
+                }else if(valueAccessor() === 'New Message' && bindingContext.$root.fold() === 'New Message'){
+                    return ko.bindingHandlers.css.update(element, function(){return 'active';});
+                }else{
                     return ko.bindingHandlers.css.update(element, function(){return '';});
                 }
             }
         };
+        ko.bindingHandlers.popup = {
+            init: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                app.Ajx({
+                    url: valueAccessor()
+                }).done(function(response){
+                    viewModel.body = JSON.parse(response);
+                    viewModel.targetID = element.dataset.target.replace(/#/, '');
+                    var contain = document.body.appendChild(document.createElement("DIV"));
+                    ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
+                    console.log(JSON.parse(response));
+                });
+            }
+        };
+
+        ko.bindingHandlers.viewSwitch = {
+            update: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                var bool;
+                if(app.currentView() === valueAccessor()){
+                    bool = true;
+                } else{
+                    bool = false;
+                }
+                return ko.bindingHandlers.visible.update(element, function(){return bool;});
+            }
+        };
+
+        ko.bindingHandlers.uniqueTemplate = {
+            init: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                return ko.bindingHandlers.template.init(element, valueAccessor, allBindings, viewModel, bindContext);
+            },
+            update: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                var items = valueAccessor().foreach;
+                items(_.unique(items()));
+                return ko.bindingHandlers.template.update(element, valueAccessor, allBindings, viewModel, bindContext);
+            }
+        };
+        ko.virtualElements.allowedBindings.uniqueTemplate = true;
 
         // expand observableArray - push array of items to observableArray
         ko.observableArray.fn.pushAll = function(valuesToPush) {
@@ -59,6 +102,7 @@ requirejs([ 'knockout',
             return this;  //optional
         };
         ko.virtualElements.allowedBindings.stopBinding = true;
+
 
         // start app module
         app.start();
