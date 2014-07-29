@@ -120,11 +120,11 @@
 
                     <div class="wrapperDiv">
                         <label class="labelForNew">Recipient</label>
-                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' " value="Add">
+                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' ,click: reset" value="Add">
                         <input type = "button" class="btn btn-white" value = "Address book" data-bind="click: check">
                         <table class="table  mails adress-book">
                             <tbody id = "chosenmail">
-                            <!-- ko template: {name: 'chosen-mail', foreach: items } -->
+                            <!-- ko uniqueTemplate: {name: 'chosen-mail', foreach: items } -->
                             <!-- /ko -->
                             </tbody>
                         </table>
@@ -189,10 +189,10 @@
 
 <script type="text/html" id="posts-in-popup">
     <tr>
-        <td class="inp-check"><input type = "checkbox" data-bind="checked: $root.chosenItems, checkedValue: $data.nid"></td>
-        <td data-bind="click:$root.label">{{position_organization}}</td>
-        <td data-bind="attr.title: position_full_name, click:$root.label">{{position_short_name}}</td>
-        <td data-bind="click:$root.label">{{full_name}}</td>
+        <td class="inp-check"><input type = "checkbox" data-bind=" checked: $root.chosenItems, checkedValue: $data"></td>
+        <td data-bind="click: $root.label">{{position_organization}}</td>
+        <td data-bind="attr.title: position_full_name, click: $root.label">{{position_short_name}}</td>
+        <td data-bind="click: $root.label">{{full_name}}</td>
     </tr>
 </script>
 
@@ -201,6 +201,7 @@
         <td class="td">{{position_organization}}</td>
         <td data-bind="attr.title: position_full_name">{{position_short_name}}</td>
         <td>{{full_name}}</td>
+        <td data-bind="click: $root.deleteElement" class="delete">&times;</td>
     </tr>
 </script>
 <!-- /ko -->

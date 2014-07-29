@@ -88,7 +88,7 @@ define(function () {
                 //sender: KO.observable(),
                 body: KO.observable()
             };
-            self.items = KO.observableArray();
+            self.items = KO.observableArray([]);
             self.saveLetter = function(form){
                 var letter = KO.mapping.toJSON(self.obj);
                 self.save(letter).done(function(){
@@ -98,33 +98,21 @@ define(function () {
             };
             self.chosenItems =  KO.observableArray([]);
             self.check = function () {
-                for (var i=0; i<self.body.length; i++){
-                    for(var j=0; j< self.chosenItems().length;j++){
-                        if(self.body[i].nid == self.chosenItems()[j]){
-                                 self.items.push(self.body[i]);
-                                 
-                        }
-                    }
-                }
+                self.items.pushAll(self.chosenItems());
             };
-           /* self.chosenFunc = KO.computed(
-                {
-                    read: function(){self.chosenItems()},
-                    write: function(){console.log('write')}
-                }
-            )*/
             self.reset = function(){
-                self.items([]);
                 self.chosenItems([]);
-            }
+            };
             self.label = function(e){
-                console.log(e.nid);
-                if(self.chosenItems().indexOf(e.nid)== -1){
-                    self.chosenItems.push(e.nid);
+                if(self.chosenItems().indexOf(e)== -1){
+                    self.chosenItems.push(e);
                 }
                 else{
-                    self.chosenItems.splice(self.chosenItems.indexOf(e.nid),1);
+                    self.chosenItems.splice(self.chosenItems.indexOf(e),1);
                 }
+            }
+            self.deleteElement = function(e){
+                self.items.splice(self.items.indexOf(e),1);
             }
         }
     };

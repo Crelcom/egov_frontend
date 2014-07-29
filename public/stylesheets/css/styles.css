@@ -222,6 +222,9 @@ table.table.mails tr.unreaded td {
 .modal-content {
   left: -10%; }
 
+.delete {
+  cursor: pointer; }
+
 .labelForVisibleForm {
   display: none; }
   .labelForVisibleForm h2 {

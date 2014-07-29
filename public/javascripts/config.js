@@ -81,6 +81,18 @@ requirejs([ 'knockout',
             }
         };
 
+        ko.bindingHandlers.uniqueTemplate = {
+            init: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                return ko.bindingHandlers.template.init(element, valueAccessor, allBindings, viewModel, bindContext);
+            },
+            update: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                var items = valueAccessor().foreach;
+                items(_.unique(items()));
+                return ko.bindingHandlers.template.update(element, valueAccessor, allBindings, viewModel, bindContext);
+            }
+        };
+        ko.virtualElements.allowedBindings.uniqueTemplate = true;
+
         // expand observableArray - push array of items to observableArray
         ko.observableArray.fn.pushAll = function(valuesToPush) {
             var underlyingArray = this();
@@ -90,6 +102,7 @@ requirejs([ 'knockout',
             return this;  //optional
         };
         ko.virtualElements.allowedBindings.stopBinding = true;
+
 
         // start app module
         app.start();
