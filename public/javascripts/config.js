@@ -15,6 +15,9 @@ requirejs.config({
     shim: {
         underscore: {
             exports: '_'
+        },
+        dispatch: {
+            exports: 'dispatch'
         }
     }
 });
@@ -43,9 +46,11 @@ requirejs([ 'knockout',
         };
         ko.bindingHandlers.selected = {
             update: function(element, valueAccessor, allBindings, viewModel, bindingContext){
-                if(bindingContext.$root.activeTab() === viewModel[valueAccessor()]){
+                if(bindingContext.$root.fold() === viewModel[valueAccessor()]){
                     return ko.bindingHandlers.css.update(element, function(){return 'active';});
-                }else {
+                }else if(valueAccessor() === 'New Message' && bindingContext.$root.fold() === 'New Message'){
+                    return ko.bindingHandlers.css.update(element, function(){return 'active';});
+                }else{
                     return ko.bindingHandlers.css.update(element, function(){return '';});
                 }
             }

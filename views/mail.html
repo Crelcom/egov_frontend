@@ -13,7 +13,7 @@
             <!-- ko template: {name: 'mail-folders-tpl', foreach: data} -->
             <!-- /ko -->
             <li><a href="#">+</a></li>
-            <li data-bind="click: createNewMessage"><a href = "#"> New Message</a></li>
+            <li data-bind=" selected: 'New Message', click: createNewMessage "><a href = "#/new">New Message</a></li>
         </ul>
 
         <!--Grid View-->
@@ -110,7 +110,7 @@
 </div>
 
 <!--New Message View-->
-<div class="container" id = "newmail" data-bind="viewSwitch: 'newmessage' ">
+<div class="container" id = "newmail" data-bind="viewSwitch: 'new' ">
     <div class="starter-template">
         <div>
             <form class="form-inline" role="form" data-bind="submit: saveLetter">
@@ -189,7 +189,7 @@
 
 <script type="text/html" id="posts-in-popup">
     <tr>
-        <td class="inp-check"><input type = "checkbox" data-bind="checked: $root.chosenFunc, checkedValue: $data.nid"></td>
+        <td class="inp-check"><input type = "checkbox" data-bind="checked: $root.chosenItems, checkedValue: $data.nid"></td>
         <td data-bind="click:$root.label">{{position_organization}}</td>
         <td data-bind="attr.title: position_full_name, click:$root.label">{{position_short_name}}</td>
         <td data-bind="click:$root.label">{{full_name}}</td>
@@ -206,8 +206,8 @@
 <!-- /ko -->
 
 <script type="text/html" id="mail-folders-tpl">
-    <li data-bind="click: $root.setActive, selected: 'title'">
-        <a data-bind="attr.href: '/mail#'+title">{{title}}</a>
+    <li data-bind=" selected: 'title' ">
+        <a data-bind=" attr.href: '/mail#/grid/fold='+title ">{{title}}</a>
     </li>
 </script>
 
