@@ -105,11 +105,11 @@ define(function () {
                 self.chosenItems([]);
             };
             self.label = function(e){
-                if(self.chosenItems().indexOf(e.nid)== -1){
-                    self.chosenItems.push(e.nid);
+                if(self.chosenItems().indexOf(e)== -1){
+                    self.chosenItems.push(e);
                 }
                 else{
-                    self.chosenItems.splice(self.chosenItems.indexOf(e.nid),1);
+                    self.chosenItems.splice(self.chosenItems.indexOf(e),1);
                 }
             }
         }
