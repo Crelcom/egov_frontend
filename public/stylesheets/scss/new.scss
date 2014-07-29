@@ -36,9 +36,23 @@
   }
 }
 .tableForPopUpPosts{
-  td{
-    width: 5%;
+  tr{
+    cursor: pointer;
   }
 }
+.adress-book{
+  margin-top: 20px;
+  td:first-child{
 
+  }
+}
+.td{
+  width: 40%;
+}
+.inp-check{
+  width: 15px;
+}
+.modal-content{
+  left:-10%;
+}
 
