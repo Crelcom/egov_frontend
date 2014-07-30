@@ -122,7 +122,7 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
                     return true;
                 }
             });
-            console.log(filtered);
+            return filtered;
         };
         // user can expand default properties from mixin
         if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);

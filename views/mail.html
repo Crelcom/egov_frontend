@@ -116,7 +116,7 @@
             <form class="form-inline" role="form" data-bind="submit: saveLetter">
                 <div class="row-fluid wrapper-box">
                     <label class="labelForNew">Title</label>
-                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: obj.header"><br>
+                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: objLetter.header"><br>
 
                     <div class="wrapperDiv">
                         <label class="labelForNew">Recipient</label>
@@ -132,7 +132,7 @@
                     </div>
 
                     <label class="labelForNew">Letter's body</label><br>
-                    <textarea rows="10" data-bind = "value: obj.body"></textarea><br>
+                    <textarea rows="10" data-bind = "value: objLetter.body"></textarea><br>
 
                     <div class="wrapperDiv">
                         <label class="labelForNew">Attach a file</label>

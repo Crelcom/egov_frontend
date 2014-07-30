@@ -61,10 +61,11 @@ requirejs([ 'knockout',
                     url: valueAccessor()
                 }).done(function(response){
                     viewModel.body = JSON.parse(response);
+                    console.log(viewModel.body)
+                    //viewModel.filters = ko.observable(viewModel.body);
                     viewModel.targetID = element.dataset.target.replace(/#/, '');
                     var contain = document.body.appendChild(document.createElement("DIV"));
                     ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
-                    console.log(JSON.parse(response));
                 });
             }
         };

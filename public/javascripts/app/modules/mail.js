@@ -82,21 +82,35 @@ define(function () {
         viewName: 'new',
         mixin: function(){
             var self = this;
-            self.BoolCheck = KO.observable(false);
-            self.obj = {
+            self.userData = function(field){
+                var userData = JSON.parse(localStorage.userData);
+                return userData[field];
+            }
+            self.objLetter = {
                 header: KO.observable(),
-                //sender: KO.observable(),
+                type: "mail_message",
+                field_sender_organization:self.userData('position_organization'),
+                field_sender_user: self.userData('name'),
+                field_message_position:self.userData('position_short_name'),
+                field_sender_position: self.userData('position_short_name'),
                 body: KO.observable()
             };
-            self.items = KO.observableArray([]);
             self.saveLetter = function(form){
-                var letter = KO.mapping.toJSON(self.obj);
+                var letter = KO.mapping.toJS(self.objLetter);
+                letter.sender =  self.items();
+                letter = KO.mapping.toJSON(letter);
+                console.log(letter);
                 self.save(letter).done(function(){
                     form.reset();
-                    app.hash('/grid/fold=Inbox');
+                    self.items([]);
+                    //app.hash('/grid/fold=Inbox');
+                    //Может тут href ??
+                    app.href('/grid/fold=Inbox');
                 });
             };
+            self.filters = KO.observableArray(self.body);
             self.chosenItems =  KO.observableArray([]);
+            self.items = KO.observableArray([]);
             self.check = function () {
                 self.items.pushAll(self.chosenItems());
             };
@@ -123,9 +137,10 @@ define(function () {
                 var obj = KO.mapping.toJS(self.activeFilters);
                 obj = _.each(obj,function(val, ind){
                     if (val == undefined) delete obj[ind];
-                })
-                self.filter(obj,self.body);
-            }
+                });
+                self.filters = self.filter(obj,self.body);
+                console.log(self.filters);
+            };
         }
     };
     var _NewMailVM = app.Widget('list', newMailMeta).extend('rest', {baseUrl: 'api/node'});
