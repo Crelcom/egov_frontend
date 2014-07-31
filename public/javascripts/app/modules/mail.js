@@ -108,12 +108,11 @@ define(function () {
             self.items = KO.observableArray([]);
             self.check = function () {
                 self.items.pushAll(self.chosenItems());
-                self.chosenItems([]);
+                self.reset();
             };
             self.reset = function(){
                 self.chosenItems([]);
-                console.log(self.body);
-                self.filters(self.body);
+                self.filters(self.myModal.body);
                 self.activeFilters.position_organization('');
                 self.activeFilters.position_full_name('');
                 self.activeFilters.full_name('');
@@ -139,7 +138,12 @@ define(function () {
                 obj = _.each(obj,function(val, ind){
                     if (!val) delete obj[ind];
                 });
-                self.filters(self.filter(obj, self.filters()));
+                if ($.isEmptyObject(obj) === false){
+                    self.filters(self.filter(obj, self.filters()));
+                }
+                else{
+                    self.filters(self.myModal.body);
+                }
             };
         }
     };
