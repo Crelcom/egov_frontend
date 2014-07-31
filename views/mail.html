@@ -116,7 +116,7 @@
             <form class="form-inline" role="form" data-bind="submit: saveLetter">
                 <div class="row-fluid wrapper-box">
                     <label class="labelForNew">Title</label>
-                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: objLetter.header"><br>
+                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: objLetter.title"><br>
 
                     <div class="wrapperDiv">
                         <label class="labelForNew">Recipient</label>
@@ -154,7 +154,7 @@
 [% block tpls %]
 
 <script type="text/html" id="popup-tpl">
-    <div class="modal fade" data-bind="attr.id: targetID">
+    <div class="modal fade" data-bind="attr.id: myModal.targetID">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -172,7 +172,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                    <!-- ko template: {name: 'posts-in-popup', foreach: body} -->
+                    <!-- ko template: {name: 'posts-in-popup', foreach: filters} -->
                     <!-- /ko -->
                         </tbody>
                     </table>

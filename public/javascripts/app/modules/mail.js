@@ -82,17 +82,13 @@ define(function () {
         viewName: 'new',
         mixin: function(){
             var self = this;
-            self.userData = function(field){
-                var userData = JSON.parse(localStorage.userData);
-                return userData[field];
-            }
             self.objLetter = {
-                header: KO.observable(),
+                title: KO.observable(),
                 type: "mail_message",
-                field_sender_organization:self.userData('position_organization'),
-                field_sender_user: self.userData('name'),
-                field_message_position:self.userData('position_short_name'),
-                field_sender_position: self.userData('position_short_name'),
+                field_sender_organization:app.User.position_organization,
+                field_sender_user: app.User.name,
+                field_message_position:app.User.position_short_name,
+                field_sender_position: app.User.position_short_name,
                 body: KO.observable()
             };
             self.saveLetter = function(form){
@@ -108,7 +104,7 @@ define(function () {
                     app.href('/grid/fold=Inbox');
                 });
             };
-            self.filters = KO.observableArray(self.body);
+            self.filters = KO.observableArray([]).subscribeTo('myModal:data');
             self.chosenItems =  KO.observableArray([]);
             self.items = KO.observableArray([]);
             self.check = function () {
@@ -138,8 +134,8 @@ define(function () {
                 obj = _.each(obj,function(val, ind){
                     if (val == undefined) delete obj[ind];
                 });
-                self.filters = self.filter(obj,self.body);
-                console.log(self.filters);
+                self.filters(self.filter(obj, self.filters()));
+                console.log(self.filters());
             };
         }
     };

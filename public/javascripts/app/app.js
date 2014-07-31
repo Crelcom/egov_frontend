@@ -153,14 +153,12 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
         return Widget;
     }();
 
-
+    var user =  KO.observable(localStorage.userData ? JSON.parse(localStorage.userData) : {name: 'Guest'}).syncWith('setUser');
     // view model for repeated page parts
     function _appVM(){
-        var self = this,
-            userData = localStorage.userData ? JSON.parse(localStorage.userData) : {name: 'Guest'};
-        self.currentUser = KO.observable(userData).subscribeTo('setUser');
+        var self = this;
         self.userName = KO.computed(function(){
-            var data = this.currentUser();
+            var data = user();
             return data.name;
         }, self);
         self.logout = function(){
@@ -261,6 +259,7 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
 
     // interface
     return {
+        User: user,
         start: appStart,
         loadModule: loadModule,
         Ajx: Ajax,
