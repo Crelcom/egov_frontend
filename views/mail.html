@@ -120,7 +120,7 @@
 
                     <div class="wrapperDiv">
                         <label class="labelForNew">Recipient</label>
-                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' ,click: reset" value="Add">
+                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json', click: reset" value="Add">
                         <input type = "button" class="btn btn-white" value = "Address book" data-bind="click: check">
                         <table class="table  mails adress-book">
                             <tbody id = "chosenmail">
@@ -153,7 +153,7 @@
 
 [% block tpls %]
 
-<script type="text/html" id="popup-tpl">
+<script type="text/html" id="myModal-tpl">
     <div class="modal fade" data-bind="attr.id: myModal.targetID">
         <div class="modal-dialog">
             <div class="modal-content">
