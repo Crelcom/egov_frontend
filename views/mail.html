@@ -116,11 +116,11 @@
             <form class="form-inline" role="form" data-bind="submit: saveLetter">
                 <div class="row-fluid wrapper-box">
                     <label class="labelForNew">Title</label>
-                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: objLetter.title"><br>
+                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: title"><br>
 
                     <div class="wrapperDiv">
                         <label class="labelForNew">Recipient</label>
-                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' ,click: reset" value="Add">
+                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' " value="Add">
                         <input type = "button" class="btn btn-white" value = "Address book" data-bind="click: check">
                         <table class="table  mails adress-book">
                             <tbody id = "chosenmail">
@@ -132,7 +132,7 @@
                     </div>
 
                     <label class="labelForNew">Letter's body</label><br>
-                    <textarea rows="10" data-bind = "value: objLetter.body"></textarea><br>
+                    <textarea rows="10" data-bind = "value: bodyLetter"></textarea><br>
 
                     <div class="wrapperDiv">
                         <label class="labelForNew">Attach a file</label>

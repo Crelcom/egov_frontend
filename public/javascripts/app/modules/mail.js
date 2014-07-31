@@ -82,25 +82,24 @@ define(function () {
         viewName: 'new',
         mixin: function(){
             var self = this;
-            self.objLetter = {
-                title: KO.observable(),
-                type: "mail_message",
-                field_sender_organization:app.User.position_organization,
-                field_sender_user: app.User.name,
-                field_message_position:app.User.position_short_name,
-                field_sender_position: app.User.position_short_name,
-                body: KO.observable()
-            };
+            self.title = KO.observable();
+            self.bodyLetter = KO.observable();
             self.saveLetter = function(form){
-                var letter = KO.mapping.toJS(self.objLetter);
-                letter.sender =  self.items();
+                console.log(app.User())
+                var letter = {
+                    title: self.title(),
+                    type: "mail_message",
+                    body: ' "und":[ {"target_id":' + self.bodyLetter() + '}]',
+                    field_message_position:self.items(),
+                    field_sender_organization:' "und":[ {"target_id":' + app.User().position_organization + '}]',
+                    field_sender_user: ' "und":[ {"target_id":' + app.User().name + '}]',
+                    field_sender_position: ' "und":[ {"target_id":' + app.User().position_short_name + '}]'
+                }
                 letter = KO.mapping.toJSON(letter);
                 console.log(letter);
                 self.save(letter).done(function(){
                     form.reset();
                     self.items([]);
-                    //app.hash('/grid/fold=Inbox');
-                    //Может тут href ??
                     app.href('/grid/fold=Inbox');
                 });
             };
@@ -109,9 +108,16 @@ define(function () {
             self.items = KO.observableArray([]);
             self.check = function () {
                 self.items.pushAll(self.chosenItems());
+                self.chosenItems([]);
             };
             self.reset = function(){
                 self.chosenItems([]);
+                console.log(self.body);
+                self.filters(self.body);
+                self.activeFilters.position_organization('');
+                self.activeFilters.position_full_name('');
+                self.activeFilters.full_name('');
+
             };
             self.label = function(e){
                 if(self.chosenItems().indexOf(e)== -1){
@@ -135,7 +141,6 @@ define(function () {
                     if (val == undefined) delete obj[ind];
                 });
                 self.filters(self.filter(obj, self.filters()));
-                console.log(self.filters());
             };
         }
     };
