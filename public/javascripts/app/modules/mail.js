@@ -90,13 +90,13 @@ define(function () {
                     title: self.title(),
                     type: "mail_message",
                     body: ' "und":[ {"target_id":' + self.bodyLetter() + '}]',
-                    field_message_position:self.items(),
+                    field_message_position:' "und":[ {"target_id":' + self.items() + '}]',
                     field_sender_organization:' "und":[ {"target_id":' + app.User().position_organization + '}]',
                     field_sender_user: ' "und":[ {"target_id":' + app.User().name + '}]',
                     field_sender_position: ' "und":[ {"target_id":' + app.User().position_short_name + '}]'
                 }
-                letter = KO.mapping.toJSON(letter);
                 console.log(letter);
+                letter = KO.mapping.toJSON(letter);
                 self.save(letter).done(function(){
                     form.reset();
                     self.items([]);
@@ -115,7 +115,7 @@ define(function () {
                 self.filters(self.myModal.body);
                 self.activeFilters.position_organization('');
                 self.activeFilters.position_full_name('');
-                self.activeFilters.full_name('');
+                self.activeFilters.user_full_name('');
             };
             self.label = function(e){
                 if(self.chosenItems().indexOf(e)== -1){
@@ -131,7 +131,7 @@ define(function () {
             self.activeFilters = {
                 position_organization:KO.observable(),
                 position_full_name : KO.observable(),
-                full_name:KO.observable()
+                user_full_name:KO.observable()
             };
             self.setActiveFilter = function(){
                 var obj = KO.mapping.toJS(self.activeFilters);
