@@ -117,7 +117,6 @@ define(function () {
                 self.activeFilters.position_organization('');
                 self.activeFilters.position_full_name('');
                 self.activeFilters.full_name('');
-
             };
             self.label = function(e){
                 if(self.chosenItems().indexOf(e)== -1){
@@ -138,7 +137,7 @@ define(function () {
             self.setActiveFilter = function(){
                 var obj = KO.mapping.toJS(self.activeFilters);
                 obj = _.each(obj,function(val, ind){
-                    if (val == undefined) delete obj[ind];
+                    if (!val) delete obj[ind];
                 });
                 self.filters(self.filter(obj, self.filters()));
             };
