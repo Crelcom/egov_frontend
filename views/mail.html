@@ -154,7 +154,7 @@
 [% block tpls %]
 
 <script type="text/html" id="popup-tpl">
-    <div class="modal fade" data-bind="attr.id: targetID">
+    <div class="modal fade" data-bind="attr.id: myModal.targetID">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -172,7 +172,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                    <!-- ko template: {name: 'posts-in-popup', foreach: body} -->
+                    <!-- ko template: {name: 'posts-in-popup', foreach: myModal.body} -->
                     <!-- /ko -->
                         </tbody>
                     </table>

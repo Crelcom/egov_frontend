@@ -60,11 +60,12 @@ requirejs([ 'knockout',
                 app.Ajx({
                     url: valueAccessor()
                 }).done(function(response){
-                    viewModel.body = JSON.parse(response);
-                    viewModel.targetID = element.dataset.target.replace(/#/, '');
+                    var target = element.dataset.target.replace(/#/, '');
+                    viewModel[target] = {};
+                    viewModel[target].body = JSON.parse(response);
+                    viewModel[target].targetID = target;
                     var contain = document.body.appendChild(document.createElement("DIV"));
                     ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
-                    console.log(JSON.parse(response));
                 });
             }
         };
