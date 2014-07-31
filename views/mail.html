@@ -13,7 +13,7 @@
             <!-- ko template: {name: 'mail-folders-tpl', foreach: data} -->
             <!-- /ko -->
             <li><a href="#">+</a></li>
-            <li data-bind="click: createMessage">New Message</li>
+            <li data-bind=" selected: 'New Message', click: createNewMessage "><a href = "#/new">New Message</a></li>
         </ul>
 
         <!--Grid View-->
@@ -21,8 +21,9 @@
             <form class="form-inline" role="form">
                 <div class="row-fluid mailFiltersForm">
                     <label for="visibleForm" class="labelForVisibleForm"><h2>Filters</h2></label>
-                    <input type = "checkbox" id = "visibleForm">
-                    <div  class = "filters">
+                    <input type="checkbox" id="visibleForm">
+
+                    <div class="filters">
                         <div class="span1">
                             <label class="sr-only" for="subject">Subject</label>
                             <input type="text" class="form-control" id="subject" placeholder="Subject">
@@ -63,53 +64,151 @@
                 <!-- /ko -->
             </table>
         </div>
-
     </div>
 
     <!--Message View-->
     <div class="col-lg-12" id="single-mail" data-bind="viewSwitch: 'message' ">
         <!-- ko with: messageData -->
-            <div class="mail-box-header">
-                <div class="pull-right tooltip-demo">
-                    <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="Reply"><i class="glyphicon glyphicon-arrow-left"></i> Reply</a>
-                    <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="" data-original-title="Move to trash"><i class="glyphicon glyphicon-trash"></i> </a>
-                </div>
-                <h2>
-                    View Message
-                </h2>
-                <div class="mail-tools tooltip-demo m-t-md">
-                    <h3>
-                        <span class="font-noraml">Subject: </span>{{title}}
-                    </h3>
-                    <h5>
-                        <span class="pull-right font-noraml">{{date}}</span>
-                        <span class="font-noraml">From: </span>{{sender_position}} | {{sender_organization}} | {{sender_user}}
-                    </h5>
-                </div>
+        <div class="mail-box-header">
+            <div class="pull-right tooltip-demo">
+                <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top"
+                   title="" data-original-title="Reply"><i class="glyphicon glyphicon-arrow-left"></i> Reply</a>
+                <a href="mailbox.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title=""
+                   data-original-title="Move to trash"><i class="glyphicon glyphicon-trash"></i></a>
             </div>
-            <div class="mail-box">
-                <div class="mail-body" data-bind="html: body">
-                </div>
-                <div class="mail-body text-right tooltip-demo">
-                    <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="glyphicon glyphicon-arrow-left"></i> Reply</a>
-                    <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="glyphicon glyphicon-share-alt"></i> Forward</a>
-                    <button title="" data-placement="top" data-toggle="tooltip" data-original-title="Trash" class="btn btn-sm btn-white"><i class="glyphicon glyphicon-trash"></i> Remove</button>
-                </div>
-                <div class="clearfix"></div>
+            <h2>
+                View Message
+            </h2>
+
+            <div class="mail-tools tooltip-demo m-t-md">
+                <h3>
+                    <span class="font-noraml">Subject: </span>{{title}}
+                </h3>
+                <h5>
+                    <span class="pull-right font-noraml">{{date}}</span>
+                    <span class="font-noraml">From: </span>{{sender_position}} | {{sender_organization}} |
+                    {{sender_user}}
+                </h5>
             </div>
-        <!-- /ko -->
+        </div>
+        <div class="mail-box">
+            <div class="mail-body" data-bind="html: body">
+            </div>
+            <div class="mail-body text-right tooltip-demo">
+                <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="glyphicon glyphicon-arrow-left"></i>
+                    Reply</a>
+                <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="glyphicon glyphicon-share-alt"></i>
+                    Forward</a>
+                <button title="" data-placement="top" data-toggle="tooltip" data-original-title="Trash"
+                        class="btn btn-sm btn-white"><i class="glyphicon glyphicon-trash"></i> Remove
+                </button>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <!-- /ko  -->
     </div>
-
-
 </div>
+
+<!--New Message View-->
+<div class="container" id = "newmail" data-bind="viewSwitch: 'new' ">
+    <div class="starter-template">
+        <div>
+            <form class="form-inline" role="form" data-bind="submit: saveLetter">
+                <div class="row-fluid wrapper-box">
+                    <label class="labelForNew">Title</label>
+                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: obj.header"><br>
+
+                    <div class="wrapperDiv">
+                        <label class="labelForNew">Recipient</label>
+                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' ,click: reset" value="Add">
+                        <input type = "button" class="btn btn-white" value = "Address book" data-bind="click: check">
+                        <table class="table  mails adress-book">
+                            <tbody id = "chosenmail">
+                            <!-- ko uniqueTemplate: {name: 'chosen-mail', foreach: items } -->
+                            <!-- /ko -->
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+
+                    <label class="labelForNew">Letter's body</label><br>
+                    <textarea rows="10" data-bind = "value: obj.body"></textarea><br>
+
+                    <div class="wrapperDiv">
+                        <label class="labelForNew">Attach a file</label>
+                        <input type="file"><br>
+                        <span>Max size: 1.95 Gb.</span><br>
+                    </div>
+                    <button class="btn  btn-white main-button">Send</button>
+                    <button class="btn  btn-white main-button">Reset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 [% endblock %]
 
 [% block tpls %]
 
+<script type="text/html" id="popup-tpl">
+    <div class="modal fade" data-bind="attr.id: targetID">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Add a recipients</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table  mails tableForPopUpPosts">
+                        <thead>
+                            <tr>
+                                <td><input type="button" value="Reset" class="btn  btn-white main-button"></td>
+                                <td><input type="text" placeholder="Position organization" class="form-control"></td>
+                                <td><input type="text" placeholder="Position name" class="form-control"></td>
+                                <td><input type="text" placeholder="Full name" class="form-control"></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                    <!-- ko template: {name: 'posts-in-popup', foreach: body} -->
+                    <!-- /ko -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn  btn-white main-button" data-bind="click:$root.check" data-dismiss="modal" aria-hidden="true">Select</button>
+                    <button class="btn  btn-white main-button" data-bind="click:reset">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/html" id="posts-in-popup">
+    <tr>
+        <td class="inp-check"><input type = "checkbox" data-bind=" checked: $root.chosenItems, checkedValue: $data"></td>
+        <td data-bind="click: $root.label">{{position_organization}}</td>
+        <td data-bind="attr.title: position_full_name, click: $root.label">{{position_short_name}}</td>
+        <td data-bind="click: $root.label">{{full_name}}</td>
+    </tr>
+</script>
+
+<script type="text/html" id="chosen-mail">
+    <tr>
+        <td class="td">{{position_organization}}</td>
+        <td data-bind="attr.title: position_full_name">{{position_short_name}}</td>
+        <td>{{full_name}}</td>
+        <td data-bind="click: $root.deleteElement" class="delete">&times;</td>
+    </tr>
+</script>
+<!-- /ko -->
+
 <script type="text/html" id="mail-folders-tpl">
-    <li data-bind="click: $root.setActive, selected: 'title'">
-        <a data-bind="attr.href: '/mail#'+title">{{title}}</a>
+    <li data-bind=" selected: 'title' ">
+        <a data-bind=" attr.href: '/mail#/grid/fold='+title ">{{title}}</a>
     </li>
 </script>
 
@@ -130,10 +229,12 @@
             <span><i class="fa fa-paperclip"></i> Attachments - </span>
             <a href="#">Download</a>
         </p>
+
         <div class="file-box">
             <div class="file">
                 <a href="#">
                     <span class="corner"></span>
+
                     <div class="thumbnail">
                         <img data-src="holder.js/100%x180" alt="...">
                     </div>
@@ -148,8 +249,9 @@
                 <div class="file">
                     <a href="#">
                         <span class="corner"></span>
+
                         <div class="icon">
-                                <i class="glyphicon glyphicon-file"></i>
+                            <i class="glyphicon glyphicon-file"></i>
                         </div>
                         <div class="file-name">
                             {{attachName}}

@@ -1,7 +1,14 @@
-define(['underscore', 'deferred'], function(_, Deferred){
+define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
     'use strict';
 
     var KO = require('knockout');
+
+    // current view and module
+    var _module = {},
+        _currentView = KO.observable();
+
+    // views init
+    _module._views = {};
 
     // async loads modules
     function loadModule(name){
@@ -15,30 +22,40 @@ define(['underscore', 'deferred'], function(_, Deferred){
         return false;
     }
 
-
-    // Constructors:
-    // Route constructor
-    function _RouterConstructor(){
-        // parse meta data and build hash-routes
-        this.buildRoutes = function(meta){
-            //fill routes
-        };
-        this.init();
-    }
-    _RouterConstructor.prototype.init = function(){
-        // look to location path and load module and meta data for uiRouter
+    // look to location path and load module and get view from hash
+    function _moduleInit(){
         var path = window.location.pathname.replace(/[\/]/g, ''),
             module = loadModule(path),
+            hash = window.location.hash.replace(/#/, ''),
             self = this;
         if(module){
-            module.done(
-                function(module){
-//                    self.buildRoutes(module.metaData);
-                    module.start();
+            module.done(function(module){
+                KO.utils.extend(_module, module);
+                _module.start();
+                if(hash && hash !== ''){
+                    dispatch.go(hash);
+                }else{
+                    dispatch.go(_module.default.view);
                 }
-            );
+            });
         }
-    };
+    }
+
+    // hash-router callback
+    // set view and trigger method from url
+    dispatch.on("/:view/:action", function(params) {
+        _currentView(params.view);
+        var viewParams = params.action.match(/(.+)=(.+)/),
+            view = _module._views[params.view][viewParams[1]];
+
+        typeof view === 'function' ? view(viewParams[2]) : view = viewParams[2];
+    });
+    // single path callback
+    dispatch.on("/:view", function(params){
+        _currentView(params.view);
+    });
+
+    // Constructors:
 
     // Rest constructor
     function _RestConstructor(meta){
@@ -55,7 +72,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
             var request = Ajax({
                 url: '/api/node.json',
                 method: 'POST',
-                data: JSON.stringify(obj),
+                data: obj,
                 token: true
             });
             return request;
@@ -64,7 +81,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
             var request = Ajax({
                 url: '/api/node' + id + '.json',
                 method: 'PUT',
-                data: JSON.stringify(obj),
+                data: obj,
                 token: true
             });
             return request;
@@ -107,11 +124,12 @@ define(['underscore', 'deferred'], function(_, Deferred){
             if(storage[name] && typeof storage[name] === 'function'){
                 storage[name].call(self, data);
             }
+            if(data.viewName) _module._views[data.viewName] = self;
         }
         Widget.prototype.extend = function(type, data){
             var self = this;
             if(type && typeof type === 'string'){
-                KO.utils.extend(self, new _RestConstructor(data));
+                KO.utils.extend(self, new storage[type](data));
             }
             return self;
         };
@@ -137,7 +155,7 @@ define(['underscore', 'deferred'], function(_, Deferred){
 
     // load main module for current page
     function appStart(){
-        var uiRouter = new _RouterConstructor();
+        _moduleInit();
         KO.applyBindings(new _appVM());
     }
 
@@ -211,9 +229,14 @@ define(['underscore', 'deferred'], function(_, Deferred){
         localStorage.userData = JSON.stringify(user);
     });
 
+    // for modules
     function go(path){
         // @todo escape from danger characters
         window.location.assign(path);
+    }
+    // for views
+    function href(path){
+        dispatch.go(path);
     }
 
 
@@ -225,7 +248,8 @@ define(['underscore', 'deferred'], function(_, Deferred){
         loadModule: loadModule,
         Ajx: Ajax,
         go: go,
+        href: href,
         Widget: widgetFactory,
-        currentView: KO.observable()
+        currentView: _currentView
     }
 });

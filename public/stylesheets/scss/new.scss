@@ -1,6 +1,5 @@
 .wrapper-box{
   text-align: left;
-  border-radius: $radius;
   padding: 20px;
   border:1px solid  #b6b6b6;
 
@@ -12,10 +11,10 @@
     margin: 8px 0;
   }
   .labelForNew{
-    @include marginForNew();
     margin-left: 3px;
     display: inline-block;
     margin-right: 8px;
+    font-weight: normal;
   }
   textarea{
     width: 100%;
@@ -28,13 +27,35 @@
   }
   .wrapperDiv{
     border:1px solid  #b6b6b6;
-    padding:20px 3px;
+    padding:10px 3px;
     @include marginForNew();
     .labelForNew{
-      margin: 0;
       margin-right: 8px;
+      font-weight: normal;
     }
   }
 }
+.tableForPopUpPosts{
+  tr{
+    cursor: pointer;
+  }
+}
+.adress-book{
+  margin-top: 20px;
+  td:first-child{
 
+  }
+}
+.td{
+  width: 40%;
+}
+.inp-check{
+  width: 15px;
+}
+.modal-content{
+  left:-10%;
+}
+.delete{
+  cursor: pointer;
+}
 
