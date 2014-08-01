@@ -227,7 +227,7 @@ i {
 
 .modal-content {
   width: 730px;
-  margin: 40% auto; }
+  margin: 40% auto 0 auto; }
 
 .modal-header {
   border-bottom: 0;

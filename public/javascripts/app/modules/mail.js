@@ -103,7 +103,7 @@ define(function () {
                         field_sender_position: ' "und":[ {"target_id":' + app.userInfo.position_full_name() + '}]'
                     }
 
-                    letter = KO.mapping.toJSON(letter);
+                    letter = KO.mapping.toJS(letter);
                     console.log(letter);
                     self.save(letter).done(function(response){
                         console.log(response);
