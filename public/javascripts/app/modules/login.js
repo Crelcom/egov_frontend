@@ -28,7 +28,6 @@ define(function(){
                     saveSession(data);
                     KO.postbox.publish('setUser', data.user);
                     saveUserInfo();
-                    app.go('/');
                 }
             });
         };
@@ -40,8 +39,8 @@ define(function(){
         }).done(function(response){
             var userInfo = JSON.parse(response);
             localStorage.setItem('userInfo',JSON.stringify(userInfo[0]));
+            app.go('/');
         });
-        return false;
     }
     // save session data to cookies
     function saveSession(data){

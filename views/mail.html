@@ -120,8 +120,8 @@
                         <input type="text" placeholder="Enter title" class="form-control title" data-bind = "value: title" required="" autofocus=""><br>
 
                         <label class="labelForNew">Recipient:</label>
-                        <button class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' "><i class='glyphicon glyphicon-plus'></i> Add</button>
-                        <button class="btn btn-white" data-bind="click: check"><i class="glyphicon glyphicon-book"></i> Address book</button>
+                        <button onclick = "return false" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' "><i class='glyphicon glyphicon-plus'></i> Add</button>
+                        <button class="btn btn-white"><i class="glyphicon glyphicon-book"></i> Address book</button>
 
                         <table class="table  mails adress-book">
                             <thead>

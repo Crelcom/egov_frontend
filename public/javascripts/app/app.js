@@ -256,6 +256,7 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
     }
     // interface
     return {
+        User: user,
         start: appStart,
         loadModule: loadModule,
         Ajx: Ajax,
