@@ -107,6 +107,23 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
             );
             return self;
         };
+        self.filter = function(obj, arr){
+            var data = arr || self.data;
+            var filtered = _.filter(data, function(val){
+                var res = _.reduce(obj, function(memo, value, key){
+                    if(val[key].toLowerCase().indexOf(value.toLowerCase()) !== -1){
+                        memo.push(1);
+                    }else{
+                        memo.push(0);
+                    }
+                    return memo;
+                }, []);
+                if(res.indexOf(0) === -1){
+                    return true;
+                }
+            });
+            return filtered;
+        };
         // user can expand default properties from mixin
         if(meta.mixin && typeof meta.mixin === 'function') meta.mixin.call(self);
     }
@@ -136,14 +153,12 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
         return Widget;
     }();
 
-
+    var user =  KO.observable(localStorage.userData ? JSON.parse(localStorage.userData) : {name: 'Guest'}).syncWith('setUser');
     // view model for repeated page parts
     function _appVM(){
-        var self = this,
-            userData = localStorage.userData ? JSON.parse(localStorage.userData) : {name: 'Guest'};
-        self.currentUser = KO.observable(userData).subscribeTo('setUser');
+        var self = this;
         self.userName = KO.computed(function(){
-            var data = this.currentUser();
+            var data = user();
             return data.name;
         }, self);
         self.logout = function(){
@@ -244,6 +259,7 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
 
     // interface
     return {
+        User: user,
         start: appStart,
         loadModule: loadModule,
         Ajx: Ajax,

@@ -115,32 +115,35 @@
         <div>
             <form class="form-inline" role="form" data-bind="submit: saveLetter">
                 <div class="row-fluid wrapper-box">
-                    <label class="labelForNew">Title</label>
-                    <input type="text" placeholder="Введите текст" class="form-control" data-bind = "value: obj.header"><br>
+                        <label class="labelForNew">Subject:</label>
+                        <input type="text" placeholder="Введите текст" class="form-control title" data-bind = "value: title"><br>
 
-                    <div class="wrapperDiv">
-                        <label class="labelForNew">Recipient</label>
-                        <input type = "button" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' ,click: reset" value="Add">
-                        <input type = "button" class="btn btn-white" value = "Address book" data-bind="click: check">
+                        <label class="labelForNew">Recipient:</label>
+                        <a class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' "><i class='glyphicon glyphicon-plus'></i> Add</a>
+                        <a class="btn btn-white" data-bind="click: check"><i class="glyphicon glyphicon-book"></i> Address book</a>
                         <table class="table  mails adress-book">
+                            <thead>
+                                <tr>
+                                    <th>Position organization</th>
+                                    <th>Position name</th>
+                                    <th>Full name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
                             <tbody id = "chosenmail">
                             <!-- ko uniqueTemplate: {name: 'chosen-mail', foreach: items } -->
                             <!-- /ko -->
                             </tbody>
                         </table>
-                        <br>
-                    </div>
 
-                    <label class="labelForNew">Letter's body</label><br>
-                    <textarea rows="10" data-bind = "value: obj.body"></textarea><br>
+                        <label class="labelForNew">Message Text:</label><br>
+                        <textarea rows="5" data-bind = "value: bodyLetter" class="form-control textarea"></textarea><br>
 
-                    <div class="wrapperDiv">
-                        <label class="labelForNew">Attach a file</label>
-                        <input type="file"><br>
-                        <span>Max size: 1.95 Gb.</span><br>
-                    </div>
-                    <button class="btn  btn-white main-button">Send</button>
-                    <button class="btn  btn-white main-button">Reset</button>
+                        <label class="labelForNew">Attach File:</label>
+                        <a class="btn btn-white" title="Max size: 1.95 Gb"><i class="glyphicon glyphicon-file"></i></a></a><br>
+
+                    <a class="btn  btn-white main-button right" data-bind = "click: saveLetter"><i class = "glyphicon glyphicon-send"></i> Send</a>
+                    <a class="btn  btn-white main-button right" data-bind = "click: resetLetter"><i class="glyphicon glyphicon-trash"></i> Reset</a>
                 </div>
             </form>
         </div>
@@ -153,26 +156,36 @@
 
 [% block tpls %]
 
-<script type="text/html" id="popup-tpl">
+<script type="text/html" id="myModal-tpl">
     <div class="modal fade" data-bind="attr.id: myModal.targetID">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Add a recipients</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-bind="click:reset">&times;</button>
+                    <h4 class="modal-title">Add recipients</h4>
                 </div>
                 <div class="modal-body">
                     <table class="table  mails tableForPopUpPosts">
-                        <thead>
-                            <tr>
-                                <td><input type="button" value="Reset" class="btn  btn-white main-button"></td>
-                                <td><input type="text" placeholder="Position organization" class="form-control"></td>
-                                <td><input type="text" placeholder="Position name" class="form-control"></td>
-                                <td><input type="text" placeholder="Full name" class="form-control"></td>
-                            </tr>
-                        </thead>
+                        <form class="form-inline" role="form">
+                            <div class="row-fluid mailFiltersForm">
+                                <div class="filters">
+                                    <div class="span1">
+                                        <input type="text" placeholder="Position organization" class="form-control" data-bind = "value: $root.activeFilters.position_organization">
+                                    </div>
+                                    <div class="span1">
+                                        <input type="text" placeholder="Position name" class="form-control" data-bind = "value: $root.activeFilters.position_full_name">
+                                    </div>
+                                    <div class="span1">
+                                        <input type="text" placeholder="Full name" class="form-control" data-bind = "value: $root.activeFilters.user_full_name">
+                                    </div>
+                                    <div class="span1">
+                                        <input type="button" value="Find" class="btn btn-default find" data-bind="click: setActiveFilter">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                         <tbody>
-                    <!-- ko template: {name: 'posts-in-popup', foreach: myModal.body} -->
+                    <!-- ko template: {name: 'posts-in-popup', foreach: filters} -->
                     <!-- /ko -->
                         </tbody>
                     </table>
@@ -190,9 +203,9 @@
 <script type="text/html" id="posts-in-popup">
     <tr>
         <td class="inp-check"><input type = "checkbox" data-bind=" checked: $root.chosenItems, checkedValue: $data"></td>
-        <td data-bind="click: $root.label">{{position_organization}}</td>
+        <td class="small" data-bind="click: $root.label">{{position_organization}}</td>
         <td data-bind="attr.title: position_full_name, click: $root.label">{{position_short_name}}</td>
-        <td data-bind="click: $root.label">{{full_name}}</td>
+        <td data-bind="click: $root.label">{{user_full_name}}</td>
     </tr>
 </script>
 
@@ -200,8 +213,8 @@
     <tr>
         <td class="td">{{position_organization}}</td>
         <td data-bind="attr.title: position_full_name">{{position_short_name}}</td>
-        <td>{{full_name}}</td>
-        <td data-bind="click: $root.deleteElement" class="delete">&times;</td>
+        <td>{{user_full_name}}</td>
+        <td data-bind="click: $root.deleteElement" class="delete"><i class="glyphicon glyphicon-remove"></i></td>
     </tr>
 </script>
 <!-- /ko -->
@@ -218,7 +231,7 @@
         <td>{{title}}</td>
         <td>{{position}}</td>
         <td>{{organization}}</td>
-        <td>{{user}}</td>
+        <td>{{user_full_name}}</td>
         <td>{{date}}</td>
     </tr>
 </script>
@@ -234,7 +247,6 @@
             <div class="file">
                 <a href="#">
                     <span class="corner"></span>
-
                     <div class="thumbnail">
                         <img data-src="holder.js/100%x180" alt="...">
                     </div>

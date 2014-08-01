@@ -57,19 +57,23 @@ requirejs([ 'knockout',
         };
         ko.bindingHandlers.popup = {
             init: function(element, valueAccessor, allBindings, viewModel, bindContext){
-                app.Ajx({
-                    url: valueAccessor()
-                }).done(function(response){
-                    var target = element.dataset.target.replace(/#/, '');
-                    viewModel[target] = {};
-                    viewModel[target].body = JSON.parse(response);
-                    viewModel[target].targetID = target;
-                    var contain = document.body.appendChild(document.createElement("DIV"));
-                    ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
-                });
+                var url = valueAccessor(),
+                    target = element.dataset.target.replace(/#/, ''),
+                    contain = document.body.appendChild(document.createElement("DIV"));
+                viewModel[target] = {};
+                viewModel[target].targetID = target;
+
+                if(url){
+                    viewModel[target].body = ko.observable(null);
+                    app.Ajx({
+                        url: url
+                    }).done(function(response){
+                        viewModel[target].body(JSON.parse(response));
+                    });
+                }
+                ko.renderTemplate(target + '-tpl', viewModel, {}, contain, "replaceNode");
             }
         };
-
         ko.bindingHandlers.viewSwitch = {
             update: function(element, valueAccessor, allBindings, viewModel, bindContext){
                 var bool;

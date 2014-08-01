@@ -82,27 +82,46 @@ define(function () {
         viewName: 'new',
         mixin: function(){
             var self = this;
-            self.BoolCheck = KO.observable(false);
-            self.obj = {
-                header: KO.observable(),
-                //sender: KO.observable(),
-                body: KO.observable()
-            };
-            self.items = KO.observableArray([]);
+            self.title = KO.observable();
+            self.bodyLetter = KO.observable();
             self.saveLetter = function(form){
-                var letter = KO.mapping.toJSON(self.obj);
+                console.log(app.User())
+                var letter = {
+                    title: self.title(),
+                    type: "mail_message",
+                    body: ' "und":[ {"target_id":' + self.bodyLetter() + '}]',
+                    field_message_position:' "und":[ {"target_id":' + self.items() + '}]',
+                    field_sender_organization:' "und":[ {"target_id":' + app.User().position_organization + '}]',
+                    field_sender_user: ' "und":[ {"target_id":' + app.User().name + '}]',
+                    field_sender_position: ' "und":[ {"target_id":' + app.User().position_short_name + '}]'
+                }
+                console.log(letter);
+                letter = KO.mapping.toJSON(letter);
                 self.save(letter).done(function(){
                     form.reset();
-                    app.hash('/grid/fold=Inbox');
+                    self.items([]);
+                    app.href('/grid/fold=Inbox');
                 });
             };
+            self.filters = KO.observableArray([]).subscribeTo('myModal:data');
             self.chosenItems =  KO.observableArray([]);
+            self.items = KO.observableArray([]);
             self.check = function () {
                 self.items.pushAll(self.chosenItems());
+                self.reset();
             };
             self.reset = function(){
                 self.chosenItems([]);
+                self.filters(self.myModal.body);
+                self.activeFilters.position_organization('');
+                self.activeFilters.position_full_name('');
+                self.activeFilters.user_full_name('');
             };
+            self.resetLetter = function(form){
+                self.items([]);
+                self.title('');
+                self.bodyLetter('');
+            }
             self.label = function(e){
                 if(self.chosenItems().indexOf(e)== -1){
                     self.chosenItems.push(e);
@@ -110,13 +129,30 @@ define(function () {
                 else{
                     self.chosenItems.splice(self.chosenItems.indexOf(e),1);
                 }
-            }
+            };
             self.deleteElement = function(e){
                 self.items.splice(self.items.indexOf(e),1);
-            }
+            };
+            self.activeFilters = {
+                position_organization:KO.observable(),
+                position_full_name : KO.observable(),
+                user_full_name:KO.observable()
+            };
+            self.setActiveFilter = function(){
+                var obj = KO.mapping.toJS(self.activeFilters);
+                obj = _.each(obj,function(val, ind){
+                    if (!val) delete obj[ind];
+                });
+                if ($.isEmptyObject(obj) === false){
+                    self.filters(self.filter(obj, self.filters()));
+                }
+                else{
+                    self.filters(self.myModal.body);
+                }
+            };
         }
     };
-    var _NewMailVM = app.Widget('rest', newMailMeta);
+    var _NewMailVM = app.Widget('list', newMailMeta).extend('rest', {baseUrl: 'api/node'});
     KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
 
     return {
