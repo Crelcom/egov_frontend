@@ -118,7 +118,7 @@ module.exports = function(express){
                     // @todo check if module exist
                     hResponse.render(module);
                 }, function() {
-                    hResponse.render('login')
+                    hResponse.redirect('/login')
                 });
             }
         });

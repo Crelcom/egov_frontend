@@ -85,7 +85,7 @@ define(function () {
             self.title = KO.observable();
             self.bodyLetter = KO.observable();
             self.saveLetter = function(form){
-                console.log(app.User())
+                console.log(app.User());
                 var letter = {
                     title: self.title(),
                     type: "mail_message",
@@ -94,7 +94,7 @@ define(function () {
                     field_sender_organization:' "und":[ {"target_id":' + app.User().position_organization + '}]',
                     field_sender_user: ' "und":[ {"target_id":' + app.User().name + '}]',
                     field_sender_position: ' "und":[ {"target_id":' + app.User().position_short_name + '}]'
-                }
+                };
                 console.log(letter);
                 letter = KO.mapping.toJSON(letter);
                 self.save(letter).done(function(){
@@ -112,7 +112,7 @@ define(function () {
             };
             self.reset = function(){
                 self.chosenItems([]);
-                self.filters(self.myModal.body);
+                self.filters(self.myModal.body());
                 self.activeFilters.position_organization('');
                 self.activeFilters.position_full_name('');
                 self.activeFilters.user_full_name('');
@@ -147,7 +147,7 @@ define(function () {
                     self.filters(self.filter(obj, self.filters()));
                 }
                 else{
-                    self.filters(self.myModal.body);
+                    self.filters(self.myModal.body());
                 }
             };
         }
