@@ -117,6 +117,11 @@ define(function () {
                 self.activeFilters.position_full_name('');
                 self.activeFilters.user_full_name('');
             };
+            self.resetLetter = function(form){
+                self.items([]);
+                self.title('');
+                self.bodyLetter('');
+            }
             self.label = function(e){
                 if(self.chosenItems().indexOf(e)== -1){
                     self.chosenItems.push(e);
