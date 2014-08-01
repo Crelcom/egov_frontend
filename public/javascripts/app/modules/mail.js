@@ -85,22 +85,32 @@ define(function () {
             self.title = KO.observable();
             self.bodyLetter = KO.observable();
             self.saveLetter = function(form){
-                console.log(app.User())
-                var letter = {
-                    title: self.title(),
-                    type: "mail_message",
-                    body: ' "und":[ {"target_id":' + self.bodyLetter() + '}]',
-                    field_message_position:' "und":[ {"target_id":' + self.items() + '}]',
-                    field_sender_organization:' "und":[ {"target_id":' + app.User().position_organization + '}]',
-                    field_sender_user: ' "und":[ {"target_id":' + app.User().name + '}]',
-                    field_sender_position: ' "und":[ {"target_id":' + app.User().position_short_name + '}]'
-                }
-                console.log(letter);
-                letter = KO.mapping.toJSON(letter);
-                self.save(letter).done(function(){
-                    form.reset();
-                    self.items([]);
-                    app.href('/grid/fold=Inbox');
+                //info for position
+                app.Ajx({
+                    url: 'api/current_position.json'
+                }).done(function(response){
+                    var userInfo = KO.mapping.fromJSON(response);
+                    app.userInfo = userInfo()[0];
+                    console.log(app.userInfo);
+
+                    var letter = {
+                        title: self.title(),
+                        type: "mail_message",
+                        body: ' "und":[ {"target_id":' + self.bodyLetter() + '}]',
+                        field_message_position:' "und":[ {"target_id":' + self.items() + '}]',
+                        field_sender_organization:' "und":[ {"target_id":' + app.userInfo.position_organization() + '}]',
+                        field_sender_user: ' "und":[ {"target_id":' + app.userInfo.user_full_name() + '}]',
+                        field_sender_position: ' "und":[ {"target_id":' + app.userInfo.position_full_name() + '}]'
+                    }
+
+                    letter = KO.mapping.toJSON(letter);
+                    console.log(letter);
+                    self.save(letter).done(function(response){
+                        console.log(response);
+                        form.reset();
+                        self.items([]);
+                        app.href('/grid/fold=Inbox');
+                    });
                 });
             };
             self.filters = KO.observableArray([]).subscribeTo('myModal:data');
