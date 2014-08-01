@@ -41,6 +41,7 @@ define(function(){
             var userInfo = JSON.parse(response);
             localStorage.setItem('userInfo',JSON.stringify(userInfo[0]));
         });
+        return false;
     }
     // save session data to cookies
     function saveSession(data){

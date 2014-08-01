@@ -117,11 +117,11 @@
                 <div class="row-fluid wrapper-box">
 
                         <label class="labelForNew">Subject:</label>
-                        <input type="text" placeholder="Введите текст" class="form-control title" data-bind = "value: title"><br>
+                        <input type="text" placeholder="Enter title" class="form-control title" data-bind = "value: title" required="" autofocus=""><br>
 
                         <label class="labelForNew">Recipient:</label>
-                        <a class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' "><i class='glyphicon glyphicon-plus'></i> Add</a>
-                        <a class="btn btn-white" data-bind="click: check"><i class="glyphicon glyphicon-book"></i> Address book</a>
+                        <button class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' "><i class='glyphicon glyphicon-plus'></i> Add</button>
+                        <button class="btn btn-white" data-bind="click: check"><i class="glyphicon glyphicon-book"></i> Address book</button>
 
                         <table class="table  mails adress-book">
                             <thead>
@@ -139,13 +139,13 @@
                         </table>
 
                         <label class="labelForNew">Message Text:</label><br>
-                        <textarea rows="5" data-bind = "value: bodyLetter" class="form-control textarea"></textarea><br>
+                        <textarea rows="5" data-bind = "value: bodyLetter" class="form-control textarea"  placeholder="Enter text"></textarea><br>
 
                         <label class="labelForNew">Attach File:</label>
                         <a class="btn btn-white" title="Max size: 1.95 Gb"><i class="glyphicon glyphicon-file"></i></a></a><br>
 
-                    <a class="btn  btn-white main-button right" data-bind = "click: saveLetter"><i class = "glyphicon glyphicon-send"></i> Send</a>
-                    <a class="btn  btn-white main-button right" data-bind = "click: resetLetter"><i class="glyphicon glyphicon-trash"></i> Reset</a>
+                    <button type = "submit" class="btn  btn-white main-button right"><i class = "glyphicon glyphicon-send send"></i> Send</button>
+                    <button class="btn  btn-white main-button right" data-bind = "click: resetLetter"><i class="glyphicon glyphicon-trash"></i> Reset</button>
                 </div>
             </form>
         </div>

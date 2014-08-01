@@ -164,6 +164,7 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
         self.logout = function(){
             var name = document.cookie.split('=');
             document.cookie = name[0] + "=" + "; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+            localStorage.clear();
             go('/');
         }
     }
