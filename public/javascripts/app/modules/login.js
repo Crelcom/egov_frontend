@@ -27,12 +27,21 @@ define(function(){
                 }else{
                     saveSession(data);
                     KO.postbox.publish('setUser', data.user);
+                    saveUserInfo();
                     app.go('/');
                 }
             });
         };
     };
-
+    //information info about position
+    function saveUserInfo(){
+        app.Ajx({
+            url: 'api/current_position.json'
+        }).done(function(response){
+            var userInfo = JSON.parse(response);
+            localStorage.setItem('userInfo',JSON.stringify(userInfo[0]));
+        });
+    }
     // save session data to cookies
     function saveSession(data){
         // save cookie

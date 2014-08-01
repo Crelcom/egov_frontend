@@ -253,13 +253,8 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
     function href(path){
         dispatch.go(path);
     }
-
-
-
-
     // interface
     return {
-        User: user,
         start: appStart,
         loadModule: loadModule,
         Ajx: Ajax,
