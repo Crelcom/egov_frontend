@@ -60,11 +60,12 @@ requirejs([ 'knockout',
                 app.Ajx({
                     url: valueAccessor()
                 }).done(function(response){
-                    viewModel.body = JSON.parse(response);
-                    viewModel.targetID = element.dataset.target.replace(/#/, '');
+                    var target = element.dataset.target.replace(/#/, '');
+                    viewModel[target] = {};
+                    viewModel[target].body = JSON.parse(response);
+                    viewModel[target].targetID = target;
                     var contain = document.body.appendChild(document.createElement("DIV"));
                     ko.renderTemplate('popup-tpl', viewModel, {}, contain, "replaceNode");
-                    console.log(JSON.parse(response));
                 });
             }
         };
@@ -81,6 +82,18 @@ requirejs([ 'knockout',
             }
         };
 
+        ko.bindingHandlers.uniqueTemplate = {
+            init: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                return ko.bindingHandlers.template.init(element, valueAccessor, allBindings, viewModel, bindContext);
+            },
+            update: function(element, valueAccessor, allBindings, viewModel, bindContext){
+                var items = valueAccessor().foreach;
+                items(_.unique(items()));
+                return ko.bindingHandlers.template.update(element, valueAccessor, allBindings, viewModel, bindContext);
+            }
+        };
+        ko.virtualElements.allowedBindings.uniqueTemplate = true;
+
         // expand observableArray - push array of items to observableArray
         ko.observableArray.fn.pushAll = function(valuesToPush) {
             var underlyingArray = this();
@@ -90,6 +103,7 @@ requirejs([ 'knockout',
             return this;  //optional
         };
         ko.virtualElements.allowedBindings.stopBinding = true;
+
 
         // start app module
         app.start();

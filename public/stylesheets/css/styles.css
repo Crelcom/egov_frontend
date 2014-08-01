@@ -207,8 +207,23 @@ table.table.mails tr.unreaded td {
       margin-right: 8px;
       font-weight: normal; }
 
-.tableForPopUpPosts td {
-  width: 5%; }
+.tableForPopUpPosts tr {
+  cursor: pointer; }
+
+.adress-book {
+  margin-top: 20px; }
+
+.td {
+  width: 40%; }
+
+.inp-check {
+  width: 15px; }
+
+.modal-content {
+  left: -10%; }
+
+.delete {
+  cursor: pointer; }
 
 .labelForVisibleForm {
   display: none; }

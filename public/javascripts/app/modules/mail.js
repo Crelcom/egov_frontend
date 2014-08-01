@@ -82,23 +82,42 @@ define(function () {
         viewName: 'new',
         mixin: function(){
             var self = this;
+            self.BoolCheck = KO.observable(false);
             self.obj = {
                 header: KO.observable(),
                 //sender: KO.observable(),
                 body: KO.observable()
             };
+            self.items = KO.observableArray([]);
             self.saveLetter = function(form){
                 var letter = KO.mapping.toJSON(self.obj);
                 self.save(letter).done(function(){
                     form.reset();
                     app.hash('/grid/fold=Inbox');
                 });
+            };
+            self.chosenItems =  KO.observableArray([]);
+            self.check = function () {
+                self.items.pushAll(self.chosenItems());
+            };
+            self.reset = function(){
+                self.chosenItems([]);
+            };
+            self.label = function(e){
+                if(self.chosenItems().indexOf(e)== -1){
+                    self.chosenItems.push(e);
+                }
+                else{
+                    self.chosenItems.splice(self.chosenItems.indexOf(e),1);
+                }
+            }
+            self.deleteElement = function(e){
+                self.items.splice(self.items.indexOf(e),1);
             }
         }
     };
     var _NewMailVM = app.Widget('rest', newMailMeta);
     KO.applyBindings(_NewMailVM, document.querySelector('#newmail'));
-
 
     return {
         start: function(){console.log('mail started')},
