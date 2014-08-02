@@ -225,9 +225,12 @@ i {
 .delete {
   cursor: pointer; }
 
-.modal-content {
+.modal-dialog {
   width: 730px;
-  margin: 40% auto 0 auto; }
+  margin: 10% auto; }
+
+.modal-content {
+  width: 730px; }
 
 .modal-header {
   border-bottom: 0;

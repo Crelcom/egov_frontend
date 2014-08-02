@@ -97,7 +97,7 @@ define(function () {
                         type: "mail_message",
                         body: {und:[{target_id:self.bodyLetter() }]},
                         field_message_position: {und:getArrPositions()},
-                        field_sender_organization:{und:[{target_id:userInfo.position_organization }]},
+                        field_sender_organization:{und:[{target_id:userInfo.position_organization_name + '(' + userInfo.position_organization_id+ ')' }]},
                         field_sender_user: {und:[{target_id:userInfo.user_full_name +' ('+ app.User().uid+ ')'}]},
                         field_sender_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')' }]}
                     };

@@ -205,7 +205,7 @@
 <script type="text/html" id="posts-in-popup">
     <tr>
         <td class="inp-check"><input type = "checkbox" data-bind=" checked: $root.chosenItems, checkedValue: $data"></td>
-        <td class="small" data-bind="click: $root.label">{{position_organization}}</td>
+        <td class="small" data-bind="click: $root.label">{{position_organization_name}}</td>
         <td data-bind="attr.title: position_full_name, click: $root.label">{{position_short_name}}</td>
         <td data-bind="click: $root.label">{{user_full_name}}</td>
     </tr>
@@ -213,7 +213,7 @@
 
 <script type="text/html" id="chosen-mail">
     <tr>
-        <td class="td">{{position_organization}}</td>
+        <td class="td">{{position_organization_name}}</td>
         <td data-bind="attr.title: position_full_name">{{position_short_name}}</td>
         <td>{{user_full_name}}</td>
         <td data-bind="click: $root.deleteElement" class="delete"><i class="glyphicon glyphicon-remove"></i></td>
