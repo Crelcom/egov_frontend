@@ -46,13 +46,13 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
     dispatch.on("/:view/:action", function(params) {
         _currentView(params.view);
         var viewParams = params.action.match(/(.+)=(.+)/),
-            view = _module._views[params.view][viewParams[1]];
+            view = viewParams ? _module._views[params.view][viewParams[1]] : false;
 
-        typeof view === 'function' ? view(viewParams[2]) : view = viewParams[2];
+         view ? (typeof view === 'function' ? view(viewParams[2]) : view = viewParams[2]) : dispatch.go('/');
     });
     // single path callback
     dispatch.on("/:view", function(params){
-        _currentView(params.view);
+        _module._views[params.view] ? _currentView(params.view) : dispatch.go('/');
     });
 
     // Constructors:
