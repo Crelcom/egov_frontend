@@ -116,14 +116,12 @@
         <div>
             <form class="form-inline" role="form" data-bind="submit: saveLetter">
                 <div class="row-fluid wrapper-box">
-
                         <label class="labelForNew">Subject:</label>
                         <input type="text" placeholder="Enter title" class="form-control title" data-bind = "value: title" required="" autofocus=""><br>
 
                         <label class="labelForNew">Recipient:</label>
                         <button onclick = "return false" class="btn btn-white" data-toggle="modal" data-target="#myModal" data-bind=" popup: '/api/positions.json' "><i class='glyphicon glyphicon-plus'></i> Add</button>
                         <button class="btn btn-white"><i class="glyphicon glyphicon-book"></i> Address book</button>
-
                         <table class="table  mails adress-book">
                             <thead>
                                 <tr>
@@ -159,7 +157,7 @@
 
 [% block tpls %]
 
-<script type="text/html" id="popup-tpl">
+<script type="text/html" id="myModal-tpl">
     <div class="modal fade" data-bind="attr.id: myModal.targetID">
         <div class="modal-dialog">
             <div class="modal-content">

@@ -34,7 +34,7 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
                 _module.start();
                 if(hash && hash !== ''){
                     dispatch.go(hash);
-                }else{
+                }else if(_module.default){
                     dispatch.go(_module.default.view);
                 }
             });
