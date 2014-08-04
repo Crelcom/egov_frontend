@@ -39,13 +39,24 @@ define(function () {
     // Mails grid section
     var mailGridMeta = {
         mixin: function(){
-            this.choosenMail = function(o, e){
+            var self = this;
+            self.choosenMail = function(o, e){
                 var path = '/message/loadID=' + o.nid;
                 app.href(path);
             }
+            self.deleteMail = function(o , e){
+                var obj = {
+                    message_folder : "Archive (7)"
+                };
+                obj = JSON.stringify(obj);
+                self.delete(o.nid,obj).done(function(response){
+                    $('#myModal').modal('show');
+                })
+            };
         }
     };
     var _MailGridVM = app.Widget('list', mailGridMeta)
+        .extend('rest', {baseUrl: 'api/node'})
         .init('/api/mail_letters.json');
 
     KO.applyBindings(_MailGridVM, document.querySelector('#mails-grid'));
@@ -92,16 +103,36 @@ define(function () {
                 else{
                     var userInfo = localStorage.getItem('userInfo');
                     userInfo = JSON.parse(userInfo);
+                    var obj =  {
+                        "title": "work",
+                        "type": "mail_message",
+                        "body": {
+                        "und": [ {"value":"post body value"} ]
+
+                        },
+                        "field_message_position": {
+                            "und": [ {"target_id":"Первый заместитель (6)"} ]
+                        },
+                        "field_sender_position": {
+                            "und": [ {"target_id":"Первый заместитель (6)"} ]
+                        },
+                        "field_sender_organization": {
+                            "und": [ {"target_id":"Министерство экономразвития и торговли РК (5)"} ]
+                        },
+                        "field_sender_user":{
+                            "und":[ {"target_id":"test (5)"} ]
+                        }
+                    }
                     var letter = {
                         title: self.title(),
                         type: "mail_message",
-                        body: {und:[{target_id:self.bodyLetter() }]},
+                        body: {und:[{value:self.bodyLetter()}]},
                         field_message_position: {und:getArrPositions()},
-                        field_sender_organization:{und:[{target_id:userInfo.position_organization_name + '(' + userInfo.position_organization_id+ ')' }]},
-                        field_sender_user: {und:[{target_id:userInfo.user_full_name +' ('+ app.User().uid+ ')'}]},
-                        field_sender_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')' }]}
+                        field_sender_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]},
+                        field_sender_organization:{und:[{target_id:userInfo.position_organization_name + ' (' + userInfo.position_organization_id+ ')'}]},
+                        field_sender_user: {und:[{target_id:userInfo.user_full_name +' ('+ app.User().uid+ ')'}]}
                     };
-                    letter = JSON.stringify(letter);
+                    letter = JSON.stringify(obj);
                     console.log(letter);
                     self.save(letter).done(function(response){
                         console.log(response);

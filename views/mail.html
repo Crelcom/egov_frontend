@@ -59,6 +59,7 @@
                     <th>Organization</th>
                     <th>Name</th>
                     <th>Date</th>
+                    <th></th>
                 </tr>
                 <!-- ko template: {name: 'mails-grid-tpl', foreach: data} -->
                 <!-- /ko -->
@@ -228,13 +229,14 @@
 </script>
 
 <script type="text/html" id="mails-grid-tpl">
-    <tr data-bind="click: $root.choosenMail">
-        <td><input type="checkbox" name="selectItem"/></td>
-        <td>{{title}}</td>
-        <td>{{position}}</td>
-        <td>{{organization}}</td>
-        <td>{{user_full_name}}</td>
-        <td>{{date}}</td>
+    <tr>
+        <td data-bind="click: $root.choosenMail"><input type="checkbox" name="selectItem"/></td>
+        <td data-bind="click: $root.choosenMail">{{title}}</td>
+        <td data-bind="click: $root.choosenMail">{{position}}</td>
+        <td data-bind="click: $root.choosenMail">{{organization}}</td>
+        <td data-bind="click: $root.choosenMail">{{user_full_name}}</td>
+        <td data-bind="click: $root.choosenMail">{{date}}</td>
+        <td data-bind="click: $root.deleteMail" class="delete"><i class="glyphicon glyphicon-remove"></i></td>
     </tr>
 </script>
 
