@@ -46,10 +46,11 @@ define(function () {
             }
             self.deleteMail = function(o , e){
                 var obj = {
-                    message_folder : "Archive (7)"
+                    field_message_folder : {und:[{target_id:'Archive (7)'}]}
                 };
                 obj = JSON.stringify(obj);
-                self.delete(o.nid,obj).done(function(response){
+                self.delete(o.nid, obj).done(function(response){
+                    console.log(response);
                     $('#myModal').modal('show');
                 })
             };
@@ -103,26 +104,6 @@ define(function () {
                 else{
                     var userInfo = localStorage.getItem('userInfo');
                     userInfo = JSON.parse(userInfo);
-                    var obj =  {
-                        "title": "work",
-                        "type": "mail_message",
-                        "body": {
-                        "und": [ {"value":"post body value"} ]
-
-                        },
-                        "field_message_position": {
-                            "und": [ {"target_id":"Первый заместитель (6)"} ]
-                        },
-                        "field_sender_position": {
-                            "und": [ {"target_id":"Первый заместитель (6)"} ]
-                        },
-                        "field_sender_organization": {
-                            "und": [ {"target_id":"Министерство экономразвития и торговли РК (5)"} ]
-                        },
-                        "field_sender_user":{
-                            "und":[ {"target_id":"test (5)"} ]
-                        }
-                    }
                     var letter = {
                         title: self.title(),
                         type: "mail_message",
@@ -132,7 +113,7 @@ define(function () {
                         field_sender_organization:{und:[{target_id:userInfo.position_organization_name + ' (' + userInfo.position_organization_id+ ')'}]},
                         field_sender_user: {und:[{target_id:userInfo.user_full_name +' ('+ app.User().uid+ ')'}]}
                     };
-                    letter = JSON.stringify(obj);
+                    letter = JSON.stringify(letter);
                     console.log(letter);
                     self.save(letter).done(function(response){
                         console.log(response);
