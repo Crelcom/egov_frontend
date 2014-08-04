@@ -161,7 +161,7 @@ define(function () {
             };
             self.reset = function(){
                 self.chosenItems([]);
-                self.filters(self.myModal.body);
+                self.filters(self.myModal.body());
                 self.activeFilters.position_organization('');
                 self.activeFilters.position_full_name('');
                 self.activeFilters.user_full_name('');
@@ -196,7 +196,7 @@ define(function () {
                     self.filters(self.filter(obj, self.filters()));
                 }
                 else{
-                    self.filters(self.myModal.body);
+                    self.filters(self.myModal.body());
                 }
             };
         }
