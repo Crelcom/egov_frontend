@@ -9,8 +9,8 @@ define(function () {
     //default values
     var defaults = {
         folders: [
-            {title: 'Inbox', nid: 0},
-            {title: 'Sent', nid: 0},
+            {title: 'Inbox', nid: 'inbox'},
+            {title: 'Sent', nid: 'sent'},
             {title: 'Archive', nid: 'archive'}
         ],
         view: '/grid/fold=Inbox'
@@ -29,7 +29,6 @@ define(function () {
                 app.href('/new');
             };
             self.addFolderName = function(){
-                alert('ololol');
                 var userInfo = localStorage.getItem('userInfo');
                 userInfo = JSON.parse(userInfo);
                 var name = $('#NewFolderName').val();
@@ -39,9 +38,7 @@ define(function () {
                     field_folder_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]}
                 }
                 obj = JSON.stringify(obj);
-                console.log(obj);
                 self.save(obj).done(function(response){
-                    console.log(response);
                     self.init('/api/mail_folders.json');
                 })
             }

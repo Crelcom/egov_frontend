@@ -97,12 +97,15 @@ requirejs([ 'knockout',
             update: function(element, valueAccessor, allBindings, viewModel, bindContext){
                 var items = valueAccessor().foreach;
                 if (allBindings.get('objectBool') === true){
-                    items(_.each(items(), function(obj,int,arr){
-                        arr = _.each(arr,function(val,ind){
-                            if(obj.nid == val.nid && obj.nid != 0 && obj.nid != 'archive'){
-                                arr.splice(ind,1);
-                            }
-                        })
+                    var temp = [];
+                    items(_.filter(items(),function(val,ind){
+                        if(temp.indexOf(val.nid) === -1){
+                            temp.push(val.nid);
+                            return true
+                        }
+                        else{
+                            return false;
+                        }
                     }));
                 }
                 else{
