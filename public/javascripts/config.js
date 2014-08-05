@@ -96,11 +96,21 @@ requirejs([ 'knockout',
             },
             update: function(element, valueAccessor, allBindings, viewModel, bindContext){
                 var items = valueAccessor().foreach;
-                if (allBindings.objectBool === true)
-                items(_.unique(items()));
+                if (allBindings.get('objectBool') === true){
+                    items(_.each(items(), function(obj,int,arr){
+                        arr = _.each(arr,function(val,ind){
+                            if(obj.nid == val.nid && obj.nid != 0 && obj.nid != 'archive'){
+                                arr.splice(ind,1);
+                            }
+                        })
+                    }));
+                }
+                else{
+                    items(_.unique(items()));
+                }
                 return ko.bindingHandlers.template.update(element, valueAccessor, allBindings, viewModel, bindContext);
             }
-        };
+    };
         ko.virtualElements.allowedBindings.uniqueTemplate = true;
 
         // expand observableArray - push array of items to observableArray

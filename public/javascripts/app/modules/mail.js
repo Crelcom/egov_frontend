@@ -164,9 +164,12 @@ define(function () {
             };
 
             self.filters = KO.observableArray([]);
-            self.myModal = {body: KO.observableArray().subscribe(function(val){
-                self.filters(val);
-            })}
+            self.myModal = {
+                body: KO.observable()
+            };
+            self.myModal.body.subscribe(function(v){
+                self.filters(v);
+            });
             self.chosenItems =  KO.observableArray([]);
             self.items = KO.observableArray([]);
             self.check = function () {
