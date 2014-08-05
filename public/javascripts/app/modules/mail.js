@@ -41,6 +41,28 @@ define(function () {
                 self.save(obj).done(function(response){
                     self.init('/api/mail_folders.json');
                 })
+            };
+            self.displayMoveIcons = KO.computed(function(){
+                var num = self.data();
+                if (num.length > 7){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            })
+            self.position = 0;
+            self.left = function(){
+                if (self.position >= 0) return false;
+                self.position = Math.min(self.position + 700, 0)
+                document.getElementById('ul-slider').style.marginLeft = self.position + 'px';
+                return false;
+            }
+            self.right = function(){
+                if (self.position <= -100 *(self.data().length-7)) return false;
+                self.position = Math.max(self.position-700, -100 *(self.data().length-7));
+                document.getElementById('ul-slider').style.marginLeft = self.position + 'px';
+                return false;
             }
         }
     };
