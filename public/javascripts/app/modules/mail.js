@@ -22,11 +22,29 @@ define(function () {
         viewName: 'grid',
         default: defaults.folders,
         mixin: function(){
-            this.fold = KO.observable('Inbox');
-            this.createNewMessage = function(){
+            var self = this;
+            self.fold = KO.observable('Inbox');
+            self.createNewMessage = function(){
                 this.fold('New Message');
                 app.href('/new');
             };
+            self.addFolderName = function(){
+                alert('ololol');
+                var userInfo = localStorage.getItem('userInfo');
+                userInfo = JSON.parse(userInfo);
+                var name = $('#NewFolderName').val();
+                var obj = {
+                    title: name,
+                    type: 'mail_folder',
+                    field_folder_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]}
+                }
+                obj = JSON.stringify(obj);
+                console.log(obj);
+                self.save(obj).done(function(response){
+                    console.log(response);
+                    self.init('/api/mail_folders.json');
+                })
+            }
         }
     };
     var _FoldersVM = app.Widget('list', foldersMeta)
@@ -51,7 +69,20 @@ define(function () {
                 obj = JSON.stringify(obj);
                 self.delete(o.nid, obj).done(function(response){
                     console.log(response);
-                    $('#myModal').modal('show');
+                })
+            };
+            self.addFolderName = function(){
+                alert('ololol');
+                var userInfo = localStorage.getItem('userInfo');
+                userInfo = JSON.parse(userInfo);
+                var name = $('#NewFolderName').val();
+                var obj = {
+                    title: name,
+                    field_folder_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]}
+                }
+                console.log(obj);
+                self.save(obj).done(function(response){
+                    console.log(response);
                 })
             };
         }
@@ -114,7 +145,6 @@ define(function () {
                         field_sender_user: {und:[{target_id:userInfo.user_full_name +' ('+ app.User().uid+ ')'}]}
                     };
                     letter = JSON.stringify(letter);
-                    console.log(letter);
                     self.save(letter).done(function(response){
                         console.log(response);
                         form.reset();
@@ -133,7 +163,10 @@ define(function () {
                 }
             };
 
-            self.filters = KO.observableArray([]).subscribeTo('myModal:data');
+            self.filters = KO.observableArray([]);
+            self.myModal = {body: KO.observableArray().subscribe(function(val){
+                self.filters(val);
+            })}
             self.chosenItems =  KO.observableArray([]);
             self.items = KO.observableArray([]);
             self.check = function () {

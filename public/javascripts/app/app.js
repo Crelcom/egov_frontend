@@ -79,7 +79,7 @@ define(['underscore', 'deferred', 'dispatch'], function(_, Deferred, dispatch){
         };
         self.update = self.delete = function(id, obj){
             var request = Ajax({
-                url: '/api/node' + id + '.json',
+                url: '/api/node/' + id + '.json',
                 method: 'PUT',
                 data: obj,
                 token: true

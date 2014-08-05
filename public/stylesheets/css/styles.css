@@ -257,6 +257,9 @@ i {
   position: relative;
   right: 30px; }
 
+.notification {
+  width: 300px; }
+
 .labelForVisibleForm {
   display: none; }
   .labelForVisibleForm h2 {

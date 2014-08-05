@@ -60,11 +60,15 @@ requirejs([ 'knockout',
                 var url = valueAccessor(),
                     target = element.dataset.target.replace(/#/, ''),
                     contain = document.body.appendChild(document.createElement("DIV"));
-                viewModel[target] = {};
+                if(!viewModel[target]){
+                    viewModel[target] = {};
+                }
                 viewModel[target].targetID = target;
 
                 if(url){
-                    viewModel[target].body = ko.observable(null);
+                    if(typeof viewModel[target].body !== 'function'){
+                        viewModel[target].body =  ko.observable(null);
+                    }
                     app.Ajx({
                         url: url
                     }).done(function(response){
@@ -92,6 +96,7 @@ requirejs([ 'knockout',
             },
             update: function(element, valueAccessor, allBindings, viewModel, bindContext){
                 var items = valueAccessor().foreach;
+                if (allBindings.objectBool === true)
                 items(_.unique(items()));
                 return ko.bindingHandlers.template.update(element, valueAccessor, allBindings, viewModel, bindContext);
             }
