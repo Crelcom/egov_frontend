@@ -258,6 +258,7 @@ define(['underscore', 'deferred', 'dispatch'], function (_, Deferred, dispatch) 
     KO.postbox.subscribe('setUser', function (user) {
         localStorage.userData = JSON.stringify(user);
     });
+    KO.postbox
 
     // for modules
     function go(path) {
@@ -269,10 +270,9 @@ define(['underscore', 'deferred', 'dispatch'], function (_, Deferred, dispatch) 
     function href(path) {
         dispatch.go(path);
     }
-
+    var positionInfo;
     // interface
     return {
-        userPosition: '',
         User: user,
         start: appStart,
         loadModule: loadModule,

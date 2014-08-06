@@ -38,7 +38,7 @@ define(function(){
             url: 'api/current_position.json'
         }).done(function(response){
             var positionInfo = JSON.parse(response);
-            app.userPosition = positionInfo[0];
+            localStorage.setItem('positionInfo', JSON.stringify(positionInfo[0]));
             app.go('/');
         });
     }

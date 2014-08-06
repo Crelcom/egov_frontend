@@ -9,14 +9,14 @@ define(function () {
     //default values
     var defaults = {
         folders: [
-            {title: 'Inbox', nid: 'inbox'},
-            {title: 'Sent', nid: 'sent'},
-            {title: 'Archive', nid: 'archive'}
+            {folder_title: 'Inbox', nid: 'inbox'},
+            {folder_title: 'Sent', nid: 'sent'},
+            {folder_title: 'Archive', nid: 'archive'}
         ],
         view: '/grid/fold=Inbox'
     };
 
-
+    var positionInfo = JSON.parse(localStorage.positionInfo);
     // Folders section
     var foldersMeta = {
         viewName: 'grid',
@@ -34,11 +34,13 @@ define(function () {
                     title: name,
                     type: 'mail_folder',
                     field_folder_position: {und: [
-                        {target_id: app.userPosition.position_full_name + ' (' + app.userPosition.nid + ')'}
+                        {target_id: positionInfo.position_short_name + ' (' + positionInfo.position_id + ')'}
                     ]}
                 };
+                console.log(obj);
                 obj = JSON.stringify(obj);
                 self.save(obj).done(function (response) {
+                    console.log(response);
                     $('#NewFolderName').empty();
                     self.init('/api/mail_folders.json');
                 })
@@ -85,11 +87,12 @@ define(function () {
             self.updateMail = function (o, e) {
                 var obj = {
                     field_archived_by_positions: {und: [
-                        {target_id: app.userPosition.position_short_name + ' (' + app.userPosition.nid + ')' }
+                        {target_id: positionInfo.position_short_name + ' (' + positionInfo.position_id + ')' }
                     ]}
                 };
                 obj = JSON.stringify(obj);
-                self.update(o.nid, obj).done(function (response) {
+
+                self.update(o.mail_id, obj).done(function (response) {
                     console.log(response);
                 })
             };
@@ -150,15 +153,16 @@ define(function () {
                         ]},
                         field_message_position: {und: self.getArrPositions()},
                         field_sender_position: {und: [
-                            {target_id: app.userPosition.position_full_name + ' (' + app.userPosition.nid + ')'}
+                            {target_id: positionInfo.position_short_name + ' (' + positionInfo.position_id + ')'}
                         ]},
                         field_sender_organization: {und: [
-                            {target_id: app.userPosition.position_organization_name + ' (' + app.userPosition.position_organization_id + ')'}
+                            {target_id: positionInfo.position_organization_name + ' (' + positionInfo.position_organization_id + ')'}
                         ]},
                         field_sender_user: {und: [
-                            {target_id: app.userPosition.user_full_name + ' (' + app.User().uid + ')'}
+                            {target_id: positionInfo.position_user_full_name + ' (' + app.User().uid + ')'}
                         ]}
                     };
+                    console.log(letter);
                     letter = JSON.stringify(letter);
                     self.save(letter).done(function (response) {
                         console.log(response);
@@ -173,7 +177,7 @@ define(function () {
                 var res = [];
                 _.each(self.items(), function (val, ind) {
                     res[ind] = {
-                        target_id: val.position_full_name + '(' + val.nid + ')'
+                        target_id: val.position_short_name + '(' + val.position_id + ')'
                     }
                 });
                 return res;
@@ -195,9 +199,9 @@ define(function () {
             self.reset = function () {
                 self.chosenItems([]);
                 self.filters(self.myModal.body());
-                self.activeFilters.position_organization(null);
-                self.activeFilters.position_full_name(null);
-                self.activeFilters.user_full_name(null);
+                self.activeFilters.position_organization_name(null);
+                self.activeFilters.position_short_name(null);
+                self.activeFilters.position_user_full_name(null);
             };
             self.resetLetter = function (form) {
                 self.items([]);
@@ -216,9 +220,9 @@ define(function () {
                 self.items.splice(self.items.indexOf(e), 1);
             };
             self.activeFilters = {
-                position_organization: KO.observable(),
-                position_full_name: KO.observable(),
-                user_full_name: KO.observable()
+                position_organization_name:KO.observable(),
+                position_short_name : KO.observable(),
+                position_user_full_name:KO.observable()
             };
             self.setActiveFilter = function () {
                 var obj = KO.mapping.toJS(self.activeFilters);
