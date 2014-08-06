@@ -24,7 +24,7 @@
                 <li>
                     <a href = "#">
                         <label for="modeSwitch"><i class="glyphicon glyphicon-wrench"></i></label>
-                        <input id="modeSwitch" type="checkbox" data-bind="checked: mode"/>
+                        <input id="modeSwitch" type="checkbox" data-bind="checked: mode, hidden: true"/>
                     </a>
                 </li>
                 <li class="new-massage" data-bind=" selected: 'New Message', click: createNewMessage "><a href = "#/new">New Message</a></li>
@@ -280,7 +280,7 @@
 </script>
 
 <script type="text/html" id="mail-folders-tpl-edit-mode">
-    <li data-bind=" selected: 'title', clickToEdit: title "></li>
+    <li data-bind=" selected: 'title', clickToEdit: folder_title "></li>
 </script>
 
 <script type="text/html" id="mails-grid-tpl">

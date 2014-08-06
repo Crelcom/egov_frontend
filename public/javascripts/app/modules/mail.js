@@ -9,9 +9,9 @@ define(function () {
     //default values
     var defaults = {
         folders: [
-            {folder_title: 'Inbox', nid: 'inbox'},
-            {folder_title: 'Sent', nid: 'sent'},
-            {folder_title: 'Archive', nid: 'archive'}
+            {folder_title: 'Inbox', folder_id: 'inbox'},
+            {folder_title: 'Sent', folder_id: 'sent'},
+            {folder_title: 'Archive', folder_id: 'archive'}
         ],
         view: '/grid/fold=Inbox'
     };
