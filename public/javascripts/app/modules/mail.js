@@ -36,7 +36,7 @@ define(function () {
                     title: name,
                     type: 'mail_folder',
                     field_folder_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]}
-                }
+                };
                 obj = JSON.stringify(obj);
                 self.save(obj).done(function(response){
                     self.init('/api/mail_folders.json');
@@ -50,14 +50,14 @@ define(function () {
                 else{
                     return false;
                 }
-            })
+            });
             self.position = 0;
             self.left = function(){
                 if (self.position >= 0) return false;
-                self.position = Math.min(self.position + 700, 0)
+                self.position = Math.min(self.position + 700, 0);
                 document.getElementById('ul-slider').style.marginLeft = self.position + 'px';
                 return false;
-            }
+            };
             self.right = function(){
                 if (self.position <= -100 *(self.data().length-7)) return false;
                 self.position = Math.max(self.position-700, -100 *(self.data().length-7));
@@ -80,7 +80,7 @@ define(function () {
             self.choosenMail = function(o, e){
                 var path = '/message/loadID=' + o.nid;
                 app.href(path);
-            }
+            };
             self.deleteMail = function(o , e){
                 var obj = {
                     field_message_folder : {und:[{target_id:'Archive (7)'}]}
@@ -98,7 +98,7 @@ define(function () {
                 var obj = {
                     title: name,
                     field_folder_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]}
-                }
+                };
                 console.log(obj);
                 self.save(obj).done(function(response){
                     console.log(response);
@@ -172,7 +172,7 @@ define(function () {
                     });
                 };
                 function getArrPositions(){
-                    var res = []
+                    var res = [];
                     _.each(self.items(),function(val,ind){
                         res[ind] = {
                             target_id: val.position_full_name  + '(' + val.nid + ')'
@@ -206,7 +206,7 @@ define(function () {
                 self.items([]);
                 self.title('');
                 self.bodyLetter('');
-            }
+            };
             self.label = function(e){
                 if(self.chosenItems().indexOf(e)== -1){
                     self.chosenItems.push(e);
