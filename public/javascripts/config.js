@@ -99,8 +99,8 @@ requirejs([ 'knockout',
                 if (allBindings.get('objectBool') === true){
                     var temp = [];
                     items(_.filter(items(),function(val,ind){
-                        if(temp.indexOf(val.nid) === -1){
-                            temp.push(val.nid);
+                        if(temp.indexOf(val.folder_id) === -1){
+                            temp.push(val.folder_id);
                             return true
                         }
                         else{

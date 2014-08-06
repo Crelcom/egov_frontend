@@ -26,41 +26,42 @@
         </ul>
         </div>
 
-        <!--Grid View-->
-        <div id="mails-grid" data-bind="viewSwitch: 'grid' ">
-            <form class="form-inline" role="form">
-                <div class="row-fluid mailFiltersForm">
-                    <label for="visibleForm" class="labelForVisibleForm"><h2>Filters</h2></label>
-                    <input type="checkbox" id="visibleForm">
+        <form class="form-inline" role="form">
+            <div class="row-fluid mailFiltersForm">
+                <label for="visibleForm" class="labelForVisibleForm"><h2>Filters</h2></label>
+                <input type="checkbox" id="visibleForm">
 
-                    <div class="filters">
-                        <div class="span1">
-                            <label class="sr-only" for="subject">Subject</label>
-                            <input type="text" class="form-control" id="subject" placeholder="Subject">
-                        </div>
-                        <div class="span1">
-                            <label class="sr-only" for="position">Position</label>
-                            <input type="text" class="form-control" id="position" placeholder="Position">
-                        </div>
-                        <div class="span1">
-                            <label class="sr-only" for="organization">Organization</label>
-                            <input type="text" class="form-control" id="organization" placeholder="Organization">
-                        </div>
-                        <div class="span1">
-                            <label class="sr-only" for="name">Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Name">
-                        </div>
-                        <div class="span1">
-                            <label class="sr-only" for="date">Date</label>
-                            <input type="text" class="form-control" id="date" placeholder="Date">
-                        </div>
-                        <div class="span1">
-                            <button type="submit" class="btn btn-default">Filter</button>
-                            <button type="submit" class="btn btn-default">Reset</button>
-                        </div>
+                <div class="filters">
+                    <div class="span1">
+                        <label class="sr-only" for="subject">Subject</label>
+                        <input type="text" class="form-control" id="subject" placeholder="Subject">
+                    </div>
+                    <div class="span1">
+                        <label class="sr-only" for="position">Position</label>
+                        <input type="text" class="form-control" id="position" placeholder="Position">
+                    </div>
+                    <div class="span1">
+                        <label class="sr-only" for="organization">Organization</label>
+                        <input type="text" class="form-control" id="organization" placeholder="Organization">
+                    </div>
+                    <div class="span1">
+                        <label class="sr-only" for="name">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Name">
+                    </div>
+                    <div class="span1">
+                        <label class="sr-only" for="date">Date</label>
+                        <input type="text" class="form-control" id="date" placeholder="Date">
+                    </div>
+                    <div class="span1">
+                        <button type="submit" class="btn btn-default">Filter</button>
+                        <button type="submit" class="btn btn-default">Reset</button>
                     </div>
                 </div>
-            </form>
+            </div>
+        </form>
+
+        <!--Grid View-->
+        <div id="mails-grid" data-bind="viewSwitch: 'grid' ">
             <table class="table mails">
                 <tr>
                     <th><input type="checkbox" name="selectAll"/></th>
@@ -268,7 +269,7 @@
 <!-- /ko -->
 
 <script type="text/html" id="mail-folders-tpl">
-    <li data-bind=" selected: 'folder_title' ">
+    <li data-bind=" selected: 'folder_title' " class = "folders-li">
         <a data-bind=" attr.href: '/mail#/grid/fold='+folder_title ">{{folder_title}}</a>
     </li>
 </script>

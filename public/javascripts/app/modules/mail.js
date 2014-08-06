@@ -81,7 +81,7 @@ define(function () {
         mixin: function () {
             var self = this;
             self.choosenMail = function (o, e) {
-                var path = '/message/loadID=' + o.nid;
+                var path = '/message/loadID=' + o.mail_id;
                 app.href(path);
             };
             self.updateMail = function (o, e) {
