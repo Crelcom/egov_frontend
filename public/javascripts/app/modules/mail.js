@@ -9,9 +9,9 @@ define(function () {
     //default values
     var defaults = {
         folders: [
-            {title: 'Inbox', nid: 'inbox'},
-            {title: 'Sent', nid: 'sent'},
-            {title: 'Archive', nid: 'archive'}
+            {folder_title: 'Inbox', nid: 'inbox'},
+            {folder_title: 'Sent', nid: 'sent'},
+            {folder_title: 'Archive', nid: 'archive'}
         ],
         view: '/grid/fold=Inbox'
     };
@@ -33,10 +33,10 @@ define(function () {
                 userInfo = JSON.parse(userInfo);
                 var name = $('#NewFolderName').val();
                 var obj = {
-                    title: name,
+                    folder_title: name,
                     type: 'mail_folder',
-                    field_folder_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]}
-                };
+                    field_folder_position: {und:[{target_id:userInfo.position_short_name +' ('+ userInfo.position_id+ ')'}]}
+                }
                 obj = JSON.stringify(obj);
                 self.save(obj).done(function(response){
                     self.init('/api/mail_folders.json');
@@ -78,7 +78,7 @@ define(function () {
         mixin: function(){
             var self = this;
             self.choosenMail = function(o, e){
-                var path = '/message/loadID=' + o.nid;
+                var path = '/message/loadID=' + o.mail_id;
                 app.href(path);
             };
             self.deleteMail = function(o , e){
@@ -86,7 +86,7 @@ define(function () {
                     field_message_folder : {und:[{target_id:'Archive (7)'}]}
                 };
                 obj = JSON.stringify(obj);
-                self.delete(o.nid, obj).done(function(response){
+                self.delete(o.mail_id, obj).done(function(response){
                     console.log(response);
                 })
             };
@@ -96,9 +96,9 @@ define(function () {
                 userInfo = JSON.parse(userInfo);
                 var name = $('#NewFolderName').val();
                 var obj = {
-                    title: name,
-                    field_folder_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]}
-                };
+                    folder_title: name,
+                    field_folder_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.position_id+ ')'}]}
+                }
                 console.log(obj);
                 self.save(obj).done(function(response){
                     console.log(response);
@@ -159,9 +159,9 @@ define(function () {
                         type: "mail_message",
                         body: {und:[{value:self.bodyLetter()}]},
                         field_message_position: {und:getArrPositions()},
-                        field_sender_position: {und:[{target_id:userInfo.position_full_name +' ('+ userInfo.nid+ ')'}]},
+                        field_sender_position: {und:[{target_id:userInfo.position_short_name +' ('+ userInfo.position_id+ ')'}]},
                         field_sender_organization:{und:[{target_id:userInfo.position_organization_name + ' (' + userInfo.position_organization_id+ ')'}]},
-                        field_sender_user: {und:[{target_id:userInfo.user_full_name +' ('+ app.User().uid+ ')'}]}
+                        field_sender_user: {und:[{target_id:userInfo.position_user_full_name +' ('+ app.User().uid+ ')'}]}
                     };
                     letter = JSON.stringify(letter);
                     self.save(letter).done(function(response){
@@ -175,7 +175,7 @@ define(function () {
                     var res = [];
                     _.each(self.items(),function(val,ind){
                         res[ind] = {
-                            target_id: val.position_full_name  + '(' + val.nid + ')'
+                            target_id: val.position_short_name  + ' (' + val.position_id + ')'
                         }
                     });
                     return res;
@@ -198,9 +198,9 @@ define(function () {
             self.reset = function(){
                 self.chosenItems([]);
                 self.filters(self.myModal.body());
-                self.activeFilters.position_organization('');
-                self.activeFilters.position_full_name('');
-                self.activeFilters.user_full_name('');
+                self.activeFilters.position_organization_name('');
+                self.activeFilters.position_short_name('');
+                self.activeFilters.position_user_full_name('');
             };
             self.resetLetter = function(form){
                 self.items([]);
@@ -219,9 +219,9 @@ define(function () {
                 self.items.splice(self.items.indexOf(e),1);
             };
             self.activeFilters = {
-                position_organization:KO.observable(),
-                position_full_name : KO.observable(),
-                user_full_name:KO.observable()
+                position_organization_name:KO.observable(),
+                position_short_name : KO.observable(),
+                position_user_full_name:KO.observable()
             };
             self.setActiveFilter = function(){
                 var obj = KO.mapping.toJS(self.activeFilters);
