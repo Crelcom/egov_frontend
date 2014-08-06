@@ -182,6 +182,45 @@ table.table.mails tr.unreaded td {
 #single-mail {
   margin-top: 50px; }
 
+.mail_menu {
+  text-align: left;
+  height: 42px; }
+
+#slider {
+  display: inline-block;
+  width: 700px;
+  height: 42px;
+  overflow: hidden; }
+
+.mail-folders1 {
+  width: 9999px;
+  border: 0; }
+
+.mail-folders2 {
+  display: inline-block;
+  border: 0;
+  margin-left: 12%; }
+
+#mails-grid {
+  border-top: 1px solid #ddd; }
+
+.move {
+  position: relative;
+  top: -13px; }
+
+.folders-li {
+  width: 100px;
+  text-align: center; }
+
+#ul-slider {
+  transition: all 2s ease-in-out;
+  -webkit-transition: all 2s ease-in-out;
+  /** Chrome & Safari **/
+  -moz-transition: all 2s ease-in-out;
+  /** Firefox **/
+  -o-transition: all 2s ease-in-out;
+  /** Opera **/ }
+
 i {
   color: black; }
 
