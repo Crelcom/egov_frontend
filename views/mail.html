@@ -84,17 +84,17 @@
 
             <div class="mail-tools tooltip-demo m-t-md">
                 <h3>
-                    <span class="font-noraml">Subject: </span>{{title}}
+                    <span class="font-noraml">Subject: </span>{{mail_title}}
                 </h3>
                 <h5>
-                    <span class="pull-right font-noraml">{{date}}</span>
-                    <span class="font-noraml">From: </span>{{sender_position}} | {{sender_organization}} |
-                    {{sender_user}}
+                    <span class="pull-right font-noraml">{{mail_date}}</span>
+                    <span class="font-noraml">From: </span>{{sender_position_name}} | {{sender_organization_name}} |
+                    {{sender_user_full_name}}
                 </h5>
             </div>
         </div>
         <div class="mail-box">
-            <div class="mail-body" data-bind="html: body">
+            <div class="mail-body" data-bind="html: mail_body">
             </div>
             <div class="mail-body text-right tooltip-demo">
                 <a class="btn btn-sm btn-white" href="mail_compose.html"><i class="glyphicon glyphicon-arrow-left"></i>
@@ -170,13 +170,13 @@
                             <div class="row-fluid mailFiltersForm">
                                 <div class="filters">
                                     <div class="span1">
-                                        <input type="text" placeholder="Position organization" class="form-control" data-bind = "value: $root.activeFilters.position_organization">
+                                        <input type="text" placeholder="Position organization" class="form-control" data-bind = "value: $root.activeFilters.position_organization_name">
                                     </div>
                                     <div class="span1">
-                                        <input type="text" placeholder="Position name" class="form-control" data-bind = "value: $root.activeFilters.position_full_name">
+                                        <input type="text" placeholder="Position name" class="form-control" data-bind = "value: $root.activeFilters.position_short_name">
                                     </div>
                                     <div class="span1">
-                                        <input type="text" placeholder="Full name" class="form-control" data-bind = "value: $root.activeFilters.user_full_name">
+                                        <input type="text" placeholder="Full name" class="form-control" data-bind = "value: $root.activeFilters.position_user_full_name">
                                     </div>
                                     <div class="span1">
                                         <input type="button" value="Find" class="btn btn-default find" data-bind="click: setActiveFilter">
@@ -244,7 +244,7 @@
         <td class="inp-check"><input type = "checkbox" data-bind=" checked: $root.chosenItems, checkedValue: $data"></td>
         <td class="small" data-bind="click: $root.label">{{position_organization_name}}</td>
         <td data-bind="attr.title: position_full_name, click: $root.label">{{position_short_name}}</td>
-        <td data-bind="click: $root.label">{{user_full_name}}</td>
+        <td data-bind="click: $root.label">{{position_user_full_name}}</td>
     </tr>
 </script>
 
@@ -252,26 +252,26 @@
     <tr>
         <td class="td">{{position_organization_name}}</td>
         <td data-bind="attr.title: position_full_name">{{position_short_name}}</td>
-        <td>{{user_full_name}}</td>
+        <td>{{position_user_full_name}}</td>
         <td data-bind="click: $root.deleteElement" class="delete"><i class="glyphicon glyphicon-remove"></i></td>
     </tr>
 </script>
 <!-- /ko -->
 
 <script type="text/html" id="mail-folders-tpl">
-    <li data-bind=" selected: 'title' ">
-        <a data-bind=" attr.href: '/mail#/grid/fold='+title ">{{title}}</a>
+    <li data-bind=" selected: 'folder_title' ">
+        <a data-bind=" attr.href: '/mail#/grid/fold='+folder_title ">{{folder_title}}</a>
     </li>
 </script>
 
 <script type="text/html" id="mails-grid-tpl">
     <tr>
         <td data-bind="click: $root.choosenMail"><input type="checkbox" name="selectItem"/></td>
-        <td data-bind="click: $root.choosenMail">{{title}}</td>
-        <td data-bind="click: $root.choosenMail">{{position}}</td>
-        <td data-bind="click: $root.choosenMail">{{organization}}</td>
-        <td data-bind="click: $root.choosenMail">{{user_full_name}}</td>
-        <td data-bind="click: $root.choosenMail">{{date}}</td>
+        <td data-bind="click: $root.choosenMail">{{mail_title}}</td>
+        <td data-bind="click: $root.choosenMail">{{sender_position_name}}</td>
+        <td data-bind="click: $root.choosenMail">{{sender_organization_name}}</td>
+        <td data-bind="click: $root.choosenMail">{{sender_user_full_name}}</td>
+        <td data-bind="click: $root.choosenMail">{{mail_date}}</td>
         <td data-bind="click: $root.deleteMail" class="delete"><i class="glyphicon glyphicon-remove" data-toggle="modal" data-target="#myModal1" data-bind=" popup "></i></td>
     </tr>
 </script>
