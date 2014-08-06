@@ -44,6 +44,13 @@ requirejs([ 'knockout',
                 return { controlsDescendantBindings: true };
             }
         };
+        ko.bindingHandlers.hidden = {
+            update: function (element, valueAccessor) {
+                ko.bindingHandlers.visible.update(element, function () {
+                    return !ko.unwrap(valueAccessor());
+                });
+            }
+        };
         ko.bindingHandlers.selected = {
             update: function(element, valueAccessor, allBindings, viewModel, bindingContext){
                 if(bindingContext.$root.fold() === viewModel[valueAccessor()]){
@@ -85,7 +92,6 @@ requirejs([ 'knockout',
                 return ko.bindingHandlers.visible.update(element, function(){return bool;});
             }
         };
-
         ko.bindingHandlers.uniqueTemplate = {
             init: function(element, valueAccessor, allBindings, viewModel, bindContext){
                 return ko.bindingHandlers.template.init(element, valueAccessor, allBindings, viewModel, bindContext);
@@ -97,6 +103,29 @@ requirejs([ 'knockout',
             }
         };
         ko.virtualElements.allowedBindings.uniqueTemplate = true;
+        ko.bindingHandlers.clickToEdit = {
+            init: function(element, valueAccessor) {
+                var observable = ko.observable(valueAccessor()),
+                    link = document.createElement("a"),
+                    input = document.createElement("input");
+                element.appendChild(link);
+                element.appendChild(input);
+
+                observable.editing = ko.observable(false);
+
+                ko.applyBindingsToNode(link, {
+                    text: observable,
+                    hidden: observable.editing,
+                    click: function() { observable.editing(true); }
+                });
+
+                ko.applyBindingsToNode(input, {
+                    value: observable,
+                    visible: observable.editing,
+                    hasfocus: observable.editing
+                });
+            }
+        };
 
         // expand observableArray - push array of items to observableArray
         ko.observableArray.fn.pushAll = function(valuesToPush) {

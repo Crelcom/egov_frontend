@@ -22,10 +22,15 @@ define(function () {
         viewName: 'grid',
         default: defaults.folders,
         mixin: function(){
-            this.fold = KO.observable('Inbox');
-            this.createNewMessage = function(){
-                this.fold('New Message');
+            var self = this;
+            self.fold = KO.observable('Inbox');
+            self.mode = KO.observable(false);
+            self.createNewMessage = function(){
+                self.fold('New Message');
                 app.href('/new');
+            };
+            self.displayMode = function(){
+                return self.mode() ? 'mail-folders-tpl-edit-mode' : 'mail-folders-tpl';
             };
         }
     };

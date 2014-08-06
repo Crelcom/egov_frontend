@@ -10,10 +10,11 @@
 
         <!--Folders View-->
         <ul class="nav nav-tabs" id="mail-folders">
-            <!-- ko template: {name: 'mail-folders-tpl', foreach: data} -->
+            <!-- ko template: {name: displayMode, foreach: data} -->
             <!-- /ko -->
             <li><a href="#">+</a></li>
             <li data-bind=" selected: 'New Message', click: createNewMessage "><a href = "#/new">New Message</a></li>
+            <li><input type="checkbox" data-bind="checked: mode"/></li>
         </ul>
 
         <!--Grid View-->
@@ -223,6 +224,10 @@
     <li data-bind=" selected: 'title' ">
         <a data-bind=" attr.href: '/mail#/grid/fold='+title ">{{title}}</a>
     </li>
+</script>
+
+<script type="text/html" id="mail-folders-tpl-edit-mode">
+    <li data-bind=" selected: 'title', clickToEdit: title "></li>
 </script>
 
 <script type="text/html" id="mails-grid-tpl">
