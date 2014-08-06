@@ -27,18 +27,18 @@ define(function(){
                 }else{
                     saveSession(data);
                     KO.postbox.publish('setUser', data.user);
-                    saveUserInfo();
+                    savePositionInfo();
                 }
             });
         };
     };
     //information info about position
-    function saveUserInfo(){
+    function savePositionInfo(){
         app.Ajx({
             url: 'api/current_position.json'
         }).done(function(response){
-            var userInfo = JSON.parse(response);
-            localStorage.setItem('userInfo',JSON.stringify(userInfo[0]));
+            var positionInfo = JSON.parse(response);
+            app.userPosition = positionInfo[0];
             app.go('/');
         });
     }
