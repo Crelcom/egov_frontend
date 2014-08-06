@@ -67,11 +67,15 @@ requirejs([ 'knockout',
                 var url = valueAccessor(),
                     target = element.dataset.target.replace(/#/, ''),
                     contain = document.body.appendChild(document.createElement("DIV"));
-                viewModel[target] = {};
+                if(!viewModel[target]){
+                    viewModel[target] = {};
+                }
                 viewModel[target].targetID = target;
 
                 if(url){
-                    viewModel[target].body = ko.observable(null);
+                    if(typeof viewModel[target].body !== 'function'){
+                        viewModel[target].body =  ko.observable(null);
+                    }
                     app.Ajx({
                         url: url
                     }).done(function(response){
@@ -98,10 +102,24 @@ requirejs([ 'knockout',
             },
             update: function(element, valueAccessor, allBindings, viewModel, bindContext){
                 var items = valueAccessor().foreach;
-                items(_.unique(items()));
+                if (allBindings.get('objectBool') === true){
+                    var temp = [];
+                    items(_.filter(items(),function(val,ind){
+                        if(temp.indexOf(val.folder_id) === -1){
+                            temp.push(val.folder_id);
+                            return true
+                        }
+                        else{
+                            return false;
+                        }
+                    }));
+                }
+                else{
+                    items(_.unique(items()));
+                }
                 return ko.bindingHandlers.template.update(element, valueAccessor, allBindings, viewModel, bindContext);
             }
-        };
+    };
         ko.virtualElements.allowedBindings.uniqueTemplate = true;
         ko.bindingHandlers.clickToEdit = {
             init: function(element, valueAccessor) {

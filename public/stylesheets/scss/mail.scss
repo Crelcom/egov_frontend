@@ -1,5 +1,4 @@
 .starter-template {
-  margin-bottom: 10px;
   text-align: center;
   width: 100%;
 }
@@ -202,4 +201,43 @@ table.table.mails{
 }
 #single-mail {
   margin-top: 50px;
+  padding: 0;
+}
+.mail_menu{
+  text-align: left;
+  height: 42px;
+  border-bottom: 1px solid #ddd;
+}
+.nav-tabs{
+  border-bottom: 0;
+}
+#slider{
+  display:inline-block;
+  width:700px;
+  height: 42px;
+  overflow: hidden;
+}
+.mail-folders1{
+  width: 9999px;
+}
+.mail-folders2{
+  display: inline-block;
+  width:auto;
+  float: right;
+  position: relative;
+  top: -47px;
+}
+.move{
+  position: relative;
+  top:-13px;
+}
+.folders-li{
+  width: 100px;
+  text-align: center;
+}
+#ul-slider {
+  transition: all 1s ease-in-out;
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
 }

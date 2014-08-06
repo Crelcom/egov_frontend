@@ -4,9 +4,10 @@ i{
 .wrapper-box{
   text-align: left;
   padding: 20px;
-  border:1px solid  #b6b6b6;
+  border-top: 0;
   padding-bottom: 80px;
-
+  margin-top: 50px;
+  border: 1px solid #E7EAEC;
   a{
     color: #645c57;
   }
@@ -52,11 +53,13 @@ i{
 .delete{
   cursor: pointer;
 }
+.modal-dialog{
+  width: 730px;
+  margin: 10% auto;
+}
 .modal-content{
   width: 730px;
-  margin: 40% auto;
 }
-
 .modal-header{
   border-bottom: 0;
   padding-bottom:5px;
@@ -81,5 +84,8 @@ i{
   margin-left: 5px;
   position: relative;
   right: 30px;
+}
+.notification{
+  width:300px;
 }
 
